@@ -93,16 +93,10 @@ public class LogIn implements Initializable {
         Stage currentStage = (Stage) closeIcon.getScene().getWindow();
 
         if (role.equalsIgnoreCase("Admin")){
-            if (emailField.getText().equals("AdminDef")){
+
                 verificationContainer.setVisible(true);
                 randomCode.setText(generateRandomCode());
-            }else {
-                verificationContainer.setVisible(true);
-                randomCode.setText(generateRandomCode());
-                //send email
 
-
-            }
         }else if (role.equalsIgnoreCase("Librarian")){
             showAlert("Success", null, "Login successfully! Role: " + role, Alert.AlertType.INFORMATION);
             openNewStage("Librarian.fxml","Librarian Dashboard");
@@ -113,11 +107,18 @@ public class LogIn implements Initializable {
     }
     @FXML
     private void proceed(ActionEvent event) throws IOException {
+        openNewStage("Admin.fxml","Admin DashBoard");
         if (codeTextField.getText().equals(randomCode.getText())){
-            showAlert("Success", null, "Login successfully! Role: " + role, Alert.AlertType.INFORMATION);
-            openNewStage("Admin.fxml", "Admin Dashboard");
+//
+//            verificationContainer.setVisible(false);
+//            verificationContainer1.setVisible(true);
+//            showAlert("Second verification", null, "A 6 digit code has been set to your email.", Alert.AlertType.INFORMATION);
+
+
+
         }
     }
+
 
     private String generateRandomCode() {
         SecureRandom random = new SecureRandom();
