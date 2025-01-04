@@ -12,8 +12,6 @@ import javafx.stage.Stage;
 public class BorrowingBook {
 
     @FXML
-    private AnchorPane borrowDialog; // Borrowing dialog (hidden by default)
-    @FXML
     private TextField bookTitleField,dueDateTextField;
     @FXML
     private TextField bookAuthorField;
@@ -22,6 +20,7 @@ public class BorrowingBook {
 
     @FXML
     private void handleConfirmBorrow(ActionEvent event) {
+        System.out.println("Hello");
         String bookTitle = bookTitleField.getText();
         String bookAuthor = bookAuthorField.getText();
         String quantity = quantityField.getText();
