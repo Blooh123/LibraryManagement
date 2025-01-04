@@ -20,7 +20,7 @@ public class BorrowingBook {
 
     @FXML
     private void handleConfirmBorrow(ActionEvent event) {
-        System.out.println("Hello");
+
         String bookTitle = bookTitleField.getText();
         String bookAuthor = bookAuthorField.getText();
         String quantity = quantityField.getText();
