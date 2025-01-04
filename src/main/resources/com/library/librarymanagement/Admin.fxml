@@ -17,7 +17,7 @@
                   <Image url="@../../../Images/LibraryManagement.png" />
                </image>
             </ImageView>
-            <Label layoutX="105.0" layoutY="306.0" text="Welcome," textFill="WHITE">
+            <Label layoutX="60.0" layoutY="306.0" prefWidth="205.0" text="Welcome," textFill="WHITE">
                <font>
                   <Font name="System Bold" size="31.0" />
                </font>
@@ -30,12 +30,12 @@
             <Button fx:id="bookInventoryBtn" contentDisplay="RIGHT" layoutX="-21.0" layoutY="541.0" mnemonicParsing="false" onAction="#bookInventoryAction" prefHeight="77.0" prefWidth="375.0" text="Book Inventory" />
             <Button fx:id="reportsBtn" contentDisplay="RIGHT" layoutX="-21.0" layoutY="648.0" mnemonicParsing="false" onAction="#reportsAction" prefHeight="77.0" prefWidth="375.0" text="Reports" />
             <Button fx:id="logOutBtn" contentDisplay="RIGHT" layoutX="-21.0" layoutY="756.0" mnemonicParsing="false" onAction="#logOutAction" prefHeight="77.0" prefWidth="375.0" text="Log out" />
-            <Label fx:id="usernameLabel" layoutX="145.0" layoutY="351.0" text="UserName" textFill="WHITE">
+            <Label fx:id="usernameLabel" alignment="CENTER" layoutX="10.0" layoutY="351.0" prefHeight="46.0" prefWidth="448.0" text="UserName" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="31.0" />
                </font>
             </Label>
-            <Label fx:id="roleLabel" layoutX="257.0" layoutY="305.0" text="Role" textFill="WHITE">
+            <Label fx:id="roleLabel" layoutX="224.0" layoutY="305.0" text="Role" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="31.0" />
                </font>
