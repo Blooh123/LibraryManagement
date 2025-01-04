@@ -131,14 +131,24 @@ public class AdminUserManagement implements Initializable {
             showAlert("Unable to proceed", null, "Please fill out all the fields!", Alert.AlertType.INFORMATION);
             return;
         }
-        if (role == null){
-            showAlert("Unable to proceed",null, "Please select a role", Alert.AlertType.INFORMATION);
-            return;
+        // Validate the password
+        if (!isValidPassword(password)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Password");
+            alert.setHeaderText("Password does not meet the requirements");
+            alert.setContentText("Password must be 8-16 characters long and contain at least one letter and one number.");
+            alert.showAndWait();
+            return; // Stop further execution if validation fails
         }
         if (!password.equals(confirmPassword)){
             showAlert("Unable to proceed", null, "Password did not match!", Alert.AlertType.INFORMATION);
             return;
         }
+        if (role == null){
+            showAlert("Unable to proceed",null, "Please select a role", Alert.AlertType.INFORMATION);
+            return;
+        }
+
         if (database.checkIfUsernameExists(username)){
             showAlert("Unable to proceed", null, "Username already exists!", Alert.AlertType.INFORMATION);
             return;
@@ -180,12 +190,19 @@ public class AdminUserManagement implements Initializable {
             showAlert("Unable to proceed", null, "Please fill out all the fields!", Alert.AlertType.INFORMATION);
             return;
         }
+        if (!isValidPassword(password)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Password");
+            alert.setHeaderText("Password does not meet the requirements");
+            alert.setContentText("Password must be 8-16 characters long and contain at least one letter and one number.");
+            alert.showAndWait();
+            return; // Stop further execution if validation fails
+        }
+
         if (!password.equals(confirmPassword)){
             showAlert("Unable to proceed", null, "Password did not match!", Alert.AlertType.INFORMATION);
             return;
         }
-
-
 
         if (database.checkIfActualUser(ID,username)){
             if (!password.isEmpty()){
@@ -245,6 +262,17 @@ public class AdminUserManagement implements Initializable {
         searchField.setDisable(false);
         clearDataPane();
         loadAllRecords(loadRecordsQuery);
+    }
+
+    /**
+     * Validates the password based on the required criteria.
+     *
+     * @param password The password to validate.
+     * @return true if the password meets the criteria, false otherwise.
+     */
+    private boolean isValidPassword(String password) {
+        String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,16}$";
+        return password.matches(passwordPattern);
     }
     @FXML
     private void searchAction(ActionEvent event){

@@ -103,6 +103,11 @@ public class Admin implements Initializable {
         borderPane.setCenter(pane);
     }
 
+    @FXML
+    private void editAdminProfiles(){
+
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 //        try {
