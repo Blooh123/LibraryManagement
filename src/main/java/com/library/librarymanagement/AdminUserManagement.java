@@ -121,6 +121,7 @@ public class AdminUserManagement implements Initializable {
 
     @FXML
     private void SaveUser(ActionEvent event) throws SQLException {
+
         String username = usernameFIeld.getText();
         String password = new String(passwordFieldAdd.getText());
         String role = rolesCombo.getValue();
@@ -166,7 +167,6 @@ public class AdminUserManagement implements Initializable {
         searchField.setDisable(false);
         clearDataPane();
         loadAllRecords(loadRecordsQuery);
-
     }
     private int ID;
     @FXML
