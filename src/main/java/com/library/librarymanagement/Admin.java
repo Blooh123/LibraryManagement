@@ -92,15 +92,12 @@ public class Admin implements Initializable {
 
         if (pane == null) {  // Load and cache if not already loaded
             pane = loader.load();
-
-
-
             Object controller = loader.getController();
+            String username = usernameLabel.getText();
+            System.out.println(username + "  " + usernameLabel.getText());
             if (controller instanceof AdminUserManagement){
-                ((AdminUserManagement)controller).setRoleAndUsername(userName,userRole);
+                ((AdminUserManagement)controller).setRoleAndUsername(usernameLabel.getText(),roleLabel.getText());
             }
-
-
             loadedScenes.put(fxml, pane);
         }
         borderPane.setCenter(pane);
@@ -108,10 +105,10 @@ public class Admin implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            setCenteredPane("AdminUserManagement.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            setCenteredPane("AdminUserManagement.fxml");
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 }

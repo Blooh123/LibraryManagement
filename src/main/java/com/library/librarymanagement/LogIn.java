@@ -111,8 +111,8 @@ public class LogIn implements Initializable {
         if (codeTextField.getText().equals(randomCode.getText())){
             verificationContainer.setVisible(false);
             showAlert("Second verification", null, "A 6 digit code has been set to your email.", Alert.AlertType.INFORMATION);
-            String emailForDefaultAdmin = database.getValue("SELECT email FROM users WHERE username = 'AdminDef'");
-            new EmailSender(emailForDefaultAdmin);
+            String emailForUsers = database.getValue("SELECT email FROM users WHERE username = '" + emailField.getText() + "'");
+            new EmailSender(emailForUsers);
             verificationContainer1.setVisible(true);
 
 
@@ -151,7 +151,7 @@ public class LogIn implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
         Parent root = fxmlLoader.load();
 
-        if (role.equalsIgnoreCase("Super Admin")){
+        if (role.equalsIgnoreCase("Super Admin") || role.equalsIgnoreCase("Admin")){
             Admin admin = fxmlLoader.getController();
             admin.setRoleAndUsername(role,emailField.getText());
         }

@@ -111,5 +111,7 @@
             <Font name="System Bold" size="37.0" />
          </font>
       </Label>
+      <Label fx:id="usernameLabel" layoutX="183.0" layoutY="30.0" opacity="0.0" text="Label" />
+      <Label fx:id="roleLabel" layoutX="244.0" layoutY="38.0" opacity="0.0" text="Label" />
    </children>
 </AnchorPane>

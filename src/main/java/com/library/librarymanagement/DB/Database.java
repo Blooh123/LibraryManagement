@@ -110,6 +110,7 @@ public class Database {
                     "FOREIGN KEY (book_id) REFERENCES books(id)," +
                     "FOREIGN KEY (user_id) REFERENCES users(id)" +
                     ")";
+
             stmt.executeUpdate(borrowRecords);
 
             String confirmation = "CREATE TABLE IF NOT EXISTS confirmation (" +
@@ -341,8 +342,25 @@ public class Database {
 
     public boolean checkIfUsernameExists(String username) throws SQLException{
         connectToDB();
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT username FROM users WHERE username = ?")){
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE username = ?")){
             preparedStatement.setString(1, username);
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()){
+                    return true;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            connection.close();
+        }
+        return false;
+    }
+
+    public boolean checkIfEmailExists(String email) throws SQLException {
+        connectToDB();
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE email = ?")){
+            preparedStatement.setString(1, email);
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()){
                     return true;
