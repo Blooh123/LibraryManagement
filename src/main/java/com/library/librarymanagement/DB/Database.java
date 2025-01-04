@@ -23,7 +23,7 @@ public class Database {
     }
     public void addDefaultAdmin(){
         connectToDB();
-        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users(username, password, role) VALUES('AdminDef', SHA1('12345'), 'Admin')", PreparedStatement.RETURN_GENERATED_KEYS)){
+        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users(username, password, role,email) VALUES('AdminDef', SHA1('12345'), 'Admin', 'davetiongson30@gmail.com')", PreparedStatement.RETURN_GENERATED_KEYS)){
             preparedStatement.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();
@@ -80,7 +80,8 @@ public class Database {
                     "id INT AUTO_INCREMENT PRIMARY KEY," +
                     "username VARCHAR(255) NOT NULL UNIQUE," +
                     "password VARCHAR(255) NOT NULL," +
-                    "role VARCHAR(50) NOT NULL" +
+                    "role VARCHAR(50) NOT NULL," +
+                    "email VARCHAR(255)" +
                     ")";
             stmt.executeUpdate(users);
 

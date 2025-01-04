@@ -6,6 +6,7 @@ module com.library.librarymanagement {
     requires java.sql;
     requires java.desktop;
     requires javafx.swing;
+    requires jakarta.mail;
 
     opens com.library.librarymanagement to javafx.fxml;
     exports com.library.librarymanagement;

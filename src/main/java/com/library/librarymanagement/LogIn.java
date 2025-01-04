@@ -107,14 +107,15 @@ public class LogIn implements Initializable {
     }
     @FXML
     private void proceed(ActionEvent event) throws IOException {
-        openNewStage("Admin.fxml","Admin DashBoard");
+
         if (codeTextField.getText().equals(randomCode.getText())){
-//
-//            verificationContainer.setVisible(false);
-//            verificationContainer1.setVisible(true);
-//            showAlert("Second verification", null, "A 6 digit code has been set to your email.", Alert.AlertType.INFORMATION);
+
+            verificationContainer.setVisible(false);
+            verificationContainer1.setVisible(true);
+            showAlert("Second verification", null, "A 6 digit code has been set to your email.", Alert.AlertType.INFORMATION);
 
 
+ //           openNewStage("Admin.fxml","Admin DashBoard");
 
         }
     }
