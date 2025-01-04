@@ -30,6 +30,31 @@ public class SecurityUtils {
             throw new RuntimeException("Error generating AES key: " + e.getMessage());
         }
     }
+    /*
+     String url = "jdbc:mysql://localhost:3306/your_database"; // Replace with your database URL
+        String username = "your_username"; // Replace with your database username
+        String password = "your_password"; // Replace with your database password
+
+        // Query with placeholders
+        String query = "INSERT INTO `borrow_records`(`book_id`, `user_id`, `borrow_date`, `due_date`, `return_date`, `fine`,'en_key')
+    VALUES ('?','?','?','?','?','?','?')";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            // Set parameters in the query
+            preparedStatement.setString(1, "encryptAES(getString,generateAESKey())"); // Set email
+            preparedStatement.setString(2, "encryptAES(getString,generateAESKey())");          // Set status
+            preparedStatement.setString(3, ""); // Set email
+            preparedStatement.setString(4, "");          // Set status
+            preparedStatement.setString(5, ""); // Set email
+            preparedStatement.setString(6, "");
+            preparedStatement.setString(7, "keytoString(wrapKey(generateAESKEy(),generateKEKKey()))");          // Set status
+
+            // Execute the query
+            ResultSet resultSet = preparedStatement.executeQuery();
+     */
+
 
     // Encrypt data using AES
     public static String encryptAES(String data, SecretKey secretKey) {

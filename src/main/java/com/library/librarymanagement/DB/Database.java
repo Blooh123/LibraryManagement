@@ -106,6 +106,7 @@ public class Database {
                     "due_date DATE NOT NULL," +
                     "return_date DATE," +
                     "fine DECIMAL(10, 2) DEFAULT 0," +
+                    "en_key varchar(255)," +
                     "FOREIGN KEY (book_id) REFERENCES books(id)," +
                     "FOREIGN KEY (user_id) REFERENCES users(id)" +
                     ")";
