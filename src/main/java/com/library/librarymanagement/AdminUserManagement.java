@@ -38,7 +38,7 @@ public class AdminUserManagement implements Initializable {
     @FXML
     private AnchorPane mainContainer,addUserPane,editUserPane;
     @FXML
-    private TextField searchField,usernameFIeld,passwordFieldAdd,confirmPasswordField,usernameFIeld1,passwordFieldAdd1,confirmPasswordField1;
+    private TextField searchField,usernameFIeld,passwordFieldAdd,confirmPasswordField,usernameFIeld1,passwordFieldAdd1,confirmPasswordField1,emailField1,emailField;
     @FXML
     private ComboBox<String> rolesCombo,rolesCombo1;
 
@@ -110,8 +110,9 @@ public class AdminUserManagement implements Initializable {
         String username = usernameFIeld.getText();
         String password = new String(passwordFieldAdd.getText());
         String role = rolesCombo.getValue();
+        String email = emailField.getText();
         String confirmPassword = new String(confirmPasswordField.getText());
-        if ((username.isEmpty() || username.isBlank()) || (password.isEmpty() || password.isBlank()) || (confirmPassword.isEmpty() || confirmPassword.isBlank())){
+        if ((username.isEmpty() || username.isBlank()) || (password.isEmpty() || password.isBlank()) || (confirmPassword.isEmpty() || confirmPassword.isBlank()) || (email.isEmpty() || email.isBlank())){
             showAlert("Unable to proceed", null, "Please fill out all the fields!", Alert.AlertType.INFORMATION);
             return;
         }
@@ -130,11 +131,12 @@ public class AdminUserManagement implements Initializable {
 
 
 
-        database.addUser(username,password,role);
+        database.addUser(username,password,role, email);
         showAlert("Success",null, "Added successfully!", Alert.AlertType.INFORMATION);
         usernameFIeld.clear();
         passwordFieldAdd.clear();
         confirmPasswordField.clear();
+        emailField.clear();
         animatePane(addUserPane,0,-900,400);
         mainContainer.setDisable(false);
         addBtn.setDisable(false);
@@ -151,8 +153,9 @@ public class AdminUserManagement implements Initializable {
         String username = usernameFIeld1.getText();
         String password = new String(passwordFieldAdd1.getText());
         String role = rolesCombo1.getValue();
+        String email = emailField1.getText();
         String confirmPassword = new String(confirmPasswordField1.getText());
-        if ((username.isEmpty() || username.isBlank())){
+        if ((username.isEmpty() || username.isBlank()) || (email.isEmpty() || email.isBlank())){
             showAlert("Unable to proceed", null, "Please fill out all the username!", Alert.AlertType.INFORMATION);
             return;
         }
@@ -162,7 +165,7 @@ public class AdminUserManagement implements Initializable {
         }
         if (database.checkIfActualUser(ID,username)){
             if (!password.isEmpty()){
-                database.updateUser(ID,username,password,role);
+                database.updateUser(ID,username,password,role,email);
                 showAlert("Success",null, "Saved successfully!", Alert.AlertType.INFORMATION);
                 usernameFIeld1.clear();
                 passwordFieldAdd1.clear();
@@ -177,7 +180,7 @@ public class AdminUserManagement implements Initializable {
                 loadAllRecords(loadRecordsQuery);
                 return;
             }else {
-                database.updateUser(ID,username,role);
+                database.updateUser(ID,username,role,email);
                 showAlert("Success",null, "Saved successfully!", Alert.AlertType.INFORMATION);
                 usernameFIeld1.clear();
                 passwordFieldAdd1.clear();
@@ -203,6 +206,7 @@ public class AdminUserManagement implements Initializable {
         usernameFIeld1.clear();
         passwordFieldAdd1.clear();
         confirmPasswordField1.clear();
+        emailField1.clear();
         animatePane(editUserPane,0,-900,400);
         mainContainer.setDisable(false);
         addBtn.setDisable(false);
