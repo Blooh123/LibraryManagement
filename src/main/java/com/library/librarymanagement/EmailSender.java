@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.util.Properties;
 import java.util.Random;
 
-public class EmailSender {
+public class    EmailSender {
 
     private final String senderEmail = "securelibrarysystem@gmail.com"; // System's email
     private final String appPassword = "dssp dzjq udxp lpms"; // Gmail App Password
