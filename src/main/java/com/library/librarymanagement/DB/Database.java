@@ -113,7 +113,7 @@ public class Database {
 
             String confirmation = "CREATE TABLE IF NOT EXISTS confirmation (" +
                     "email VARCHAR(255)," +
-                    "code int(11))";
+                    "code varchar(11))";
             stmt.executeUpdate(confirmation);
             conn.close();
             stmt.close();

@@ -36,6 +36,7 @@ public class EmailSender {
         // Generate a random 6-digit verification code
         String verificationCode = generateVerificationCode();
 
+        System.out.println(verificationCode);
         //add the verificationCode to database
         addVerificationCodeToDatabase(Integer.parseInt(verificationCode),recipientEmail);
 

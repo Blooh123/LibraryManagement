@@ -151,8 +151,10 @@ public class LogIn implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
         Parent root = fxmlLoader.load();
 
-        Admin admin = fxmlLoader.getController();
-        admin.setRoleAndUsername(role,emailField.getText());
+        if (role.equalsIgnoreCase("Super Admin")){
+            Admin admin = fxmlLoader.getController();
+            admin.setRoleAndUsername(role,emailField.getText());
+        }
 
         Scene scene = new Scene(root);
         Stage stage1 = new Stage();

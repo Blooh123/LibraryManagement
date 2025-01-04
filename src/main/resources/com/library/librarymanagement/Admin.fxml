@@ -35,7 +35,7 @@
                   <Font name="System Bold" size="31.0" />
                </font>
             </Label>
-            <Label fx:id="roleLabel" layoutX="224.0" layoutY="305.0" text="Role" textFill="WHITE">
+            <Label fx:id="roleLabel" layoutX="213.0" layoutY="305.0" text="Role" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="31.0" />
                </font>
