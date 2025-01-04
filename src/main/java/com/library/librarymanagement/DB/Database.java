@@ -23,7 +23,7 @@ public class Database {
     }
     public void addDefaultAdmin(){
         connectToDB();
-        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users(username, password, role,email) VALUES('AdminDef', SHA1('12345'), 'Admin', 'davetiongson30@gmail.com')", PreparedStatement.RETURN_GENERATED_KEYS)){
+        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users(username, password, role,email) VALUES('AdminDef', SHA1('12345'), 'Super Admin', 'davetiongson30@gmail.com')", PreparedStatement.RETURN_GENERATED_KEYS)){
             preparedStatement.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();
@@ -110,6 +110,11 @@ public class Database {
                     "FOREIGN KEY (user_id) REFERENCES users(id)" +
                     ")";
             stmt.executeUpdate(borrowRecords);
+
+            String confirmation = "CREATE TABLE IF NOT EXISTS confirmation (" +
+                    "email VARCHAR(255)," +
+                    "code int(11))";
+            stmt.executeUpdate(confirmation);
             conn.close();
             stmt.close();
 
@@ -165,6 +170,23 @@ public class Database {
         }
         return value;
     }
+
+
+    //mao ni mag delete if ma verify ang user or Admin
+    public void deleteCode(String email, String code) throws SQLException {
+        connectToDB();
+        try (PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM confirmation WHERE email = ? AND code = ?")){
+            preparedStatement.setString(1,email);
+            preparedStatement.setString(2,code);
+            preparedStatement.executeUpdate();
+            System.out.println("Verification Code delete in database!");
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            connection.close();
+        }
+    }
+
     public Blob getImage(String query) throws SQLException {
         connectToDB();
         Blob image = null;

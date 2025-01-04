@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -26,6 +27,20 @@ public class Admin implements Initializable {
     @FXML
     private BorderPane borderPane;
     private Map<String, Pane> loadedScenes = new HashMap<>();
+    @FXML
+    private Label usernameLabel,roleLabel;
+
+
+    private String userRole;
+    private String userName;
+
+    public void setRoleAndUsername(String role,String userName){
+        this.userRole = role;
+        this.userName= userName;
+        usernameLabel.setText(userName);
+        roleLabel.setText(role);
+
+    }
 
     @FXML
     private void userManagementAction(ActionEvent event) throws IOException {

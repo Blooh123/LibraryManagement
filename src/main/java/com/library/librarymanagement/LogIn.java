@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -39,7 +40,7 @@ public class LogIn implements Initializable {
     @FXML
     private ImageView closeIcon;
     @FXML
-    private TextField emailField,codeTextField;
+    private TextField emailField,codeTextField,codeTextField1;
     @FXML
     private Label randomCode;
     @FXML
@@ -93,11 +94,9 @@ public class LogIn implements Initializable {
     private void openDashboard(String role) throws IOException {
         Stage currentStage = (Stage) closeIcon.getScene().getWindow();
 
-        if (role.equalsIgnoreCase("Admin")){
-
+        if (role.equalsIgnoreCase("Super Admin") || role.equalsIgnoreCase("Admin")){
                 verificationContainer.setVisible(true);
                 randomCode.setText(generateRandomCode());
-
         }else if (role.equalsIgnoreCase("Librarian")){
             showAlert("Success", null, "Login successfully! Role: " + role, Alert.AlertType.INFORMATION);
             openNewStage("Librarian.fxml","Librarian Dashboard");
@@ -110,7 +109,6 @@ public class LogIn implements Initializable {
     private void proceed(ActionEvent event) throws IOException, SQLException {
 
         if (codeTextField.getText().equals(randomCode.getText())){
-
             verificationContainer.setVisible(false);
             showAlert("Second verification", null, "A 6 digit code has been set to your email.", Alert.AlertType.INFORMATION);
             String emailForDefaultAdmin = database.getValue("SELECT email FROM users WHERE username = 'AdminDef'");
@@ -118,8 +116,24 @@ public class LogIn implements Initializable {
             verificationContainer1.setVisible(true);
 
 
- //           openNewStage("Admin.fxml","Admin DashBoard");
 
+ //
+
+        }
+    }
+
+    //verify action button
+    @FXML
+    private void verifyAction() throws SQLException, IOException {
+        String email = database.getValue("SELECT email FROM users WHERE username = '" + emailField.getText() + "'");//mag kuha sa email sa user based sa iyang userName (so ma hulog na unique ang each username)
+        String getVerificationCode = database.getValue("SELECT code FROM confirmation WHERE email = '" + email + "'");//mag kuha sa verification code sa confirmation table sa database
+        String entered_code = codeTextField1.getText();//mag kuha sa ge enter ni user na code
+
+        //check if nag match bah ang verification code
+        if (entered_code.equals(getVerificationCode)){
+            database.deleteCode(email, getVerificationCode);
+            showAlert("Log In Successful", null, "Log in successfully as " + role, Alert.AlertType.INFORMATION);
+            openNewStage("Admin.fxml","Admin DashBoard");
         }
     }
 
@@ -135,7 +149,12 @@ public class LogIn implements Initializable {
     private void openNewStage(String fxml, String title) throws IOException {
         Stage currentStage = (Stage) closeIcon.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
-        Scene scene = new Scene(fxmlLoader.load());
+        Parent root = fxmlLoader.load();
+
+        Admin admin = fxmlLoader.getController();
+        admin.setRoleAndUsername(role,emailField.getText());
+
+        Scene scene = new Scene(root);
         Stage stage1 = new Stage();
         stage1.setTitle(title);
         stage1.getIcons().add(new Image(getClass().getResourceAsStream("/Images/LibraryManagement.png")));

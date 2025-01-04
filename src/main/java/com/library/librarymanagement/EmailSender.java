@@ -1,10 +1,14 @@
 package com.library.librarymanagement;
 
+import com.library.librarymanagement.DB.Database;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import javafx.application.Platform;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.util.Properties;
 import java.util.Random;
 
@@ -14,6 +18,10 @@ public class EmailSender {
     private final String appPassword = "dssp dzjq udxp lpms"; // Gmail App Password
     private final String smtpHost = "smtp.gmail.com"; // Gmail SMTP Host
     private final String smtpPort = "587"; // TLS Port for Gmail
+
+    static String DB_URL = "jdbc:mysql://localhost/securelibrary";
+    static String USER = "root";
+    static String PASS = "";
 
     public EmailSender(String recipientEmail) {
         sendOTP(recipientEmail);
@@ -27,6 +35,9 @@ public class EmailSender {
     private void sendOTP(String recipientEmail) {
         // Generate a random 6-digit verification code
         String verificationCode = generateVerificationCode();
+
+        //add the verificationCode to database
+        addVerificationCodeToDatabase(Integer.parseInt(verificationCode),recipientEmail);
 
         // Configure email properties for sending via SMTP
         Properties properties = configureSMTPProperties();
@@ -55,6 +66,18 @@ public class EmailSender {
                 e.printStackTrace();
             }
         }).start();
+    }
+
+    private void addVerificationCodeToDatabase(int code, String email){
+        try(Connection connection = DriverManager.getConnection(DB_URL, USER,PASS);
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO confirmation VALUES(?,?)")){
+            preparedStatement.setString(1, email);
+            preparedStatement.setInt(2,code);
+            preparedStatement.executeUpdate();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**

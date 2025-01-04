@@ -42,6 +42,15 @@ public class AdminUserManagement implements Initializable {
     @FXML
     private ComboBox<String> rolesCombo,rolesCombo1;
 
+    private String userName;
+    private String userRole;
+
+
+    public void setRoleAndUsername(String username, String userRole){
+        this.userName = username;
+        this.userRole = userRole;
+    }
+
     private String loadRecordsQuery = "SELECT * FROM users";
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -226,11 +235,14 @@ public class AdminUserManagement implements Initializable {
                  ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
                     check = true;
-                    userDataList.add(new UserData(
-                            resultSet.getInt("id"),
-                            resultSet.getString("username"),
-                            resultSet.getString("role")
-                    ));
+                    if(!resultSet.getString("role").equalsIgnoreCase("Super Admin")){
+                        userDataList.add(new UserData(
+                                resultSet.getInt("id"),
+                                resultSet.getString("username"),
+                                resultSet.getString("role")
+                        ));
+                    }
+
                 }
             } catch (SQLException e) {
                 Platform.runLater(() -> showAlert("Error", null, "Something went wrong while loading data", Alert.AlertType.ERROR));
