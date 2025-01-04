@@ -135,7 +135,6 @@ public class AdminBookInventory implements Initializable {
                 if (!validateBookFields(bookTitleField1.getText(), bookAuthorField1.getText(), bookGenreField1.getText(), availabilityCombo1.getValue(),bookStock1.getText())) {
                     return;
                 }
-
                 // Determine availability
                 boolean isAvailable = Integer.parseInt(bookStock1.getText()) == 0 ? false : true;
 

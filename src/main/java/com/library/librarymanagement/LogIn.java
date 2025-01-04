@@ -34,7 +34,7 @@ public class LogIn implements Initializable {
 
     //FXML stuff
     @FXML
-    private AnchorPane coverPane,verificationContainer;
+    private AnchorPane coverPane,verificationContainer,verificationContainer1;
     @FXML
     private ImageView closeIcon;
     @FXML
@@ -93,8 +93,16 @@ public class LogIn implements Initializable {
         Stage currentStage = (Stage) closeIcon.getScene().getWindow();
 
         if (role.equalsIgnoreCase("Admin")){
-            verificationContainer.setVisible(true);
-            randomCode.setText(generateRandomCode());
+            if (emailField.getText().equals("AdminDef")){
+                verificationContainer.setVisible(true);
+                randomCode.setText(generateRandomCode());
+            }else {
+                verificationContainer.setVisible(true);
+                randomCode.setText(generateRandomCode());
+                //send email
+
+
+            }
         }else if (role.equalsIgnoreCase("Librarian")){
             showAlert("Success", null, "Login successfully! Role: " + role, Alert.AlertType.INFORMATION);
             openNewStage("Librarian.fxml","Librarian Dashboard");
