@@ -59,7 +59,6 @@ public class LogIn implements Initializable {
 
     @FXML
     private void close(MouseEvent event){
-        System.out.println("bilat");
         Stage currentStage = (Stage) closeIcon.getScene().getWindow();
         currentStage.close();
     }
