@@ -10,8 +10,10 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 public class SecurityUtils {
-
+    public static String book_id;
+    public static String user_id;
     // Generate AES Secret Key
+    public static String unwrappedkey;
     public static SecretKey generateAESKey() {
         try {
             KeyGenerator keyGen = KeyGenerator.getInstance("AES");
@@ -37,7 +39,7 @@ public class SecurityUtils {
 
         // Query with placeholders
         String query = "INSERT INTO `borrow_records`(`book_id`, `user_id`, `borrow_date`, `due_date`, `return_date`, `fine`,'en_key')
-    VALUES ('?','?','?','?','?','?','?')";
+        VALUES ('?','?','?','?','?','?','?')";
 
         try (Connection connection = DriverManager.getConnection(url, username, password);
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -50,9 +52,32 @@ public class SecurityUtils {
             preparedStatement.setString(5, ""); // Set email
             preparedStatement.setString(6, "");
             preparedStatement.setString(7, "keytoString(wrapKey(generateAESKEy(),generateKEKKey()))");          // Set status
-
+            }catch(Exception e){
+            throw new RuntimeException("Error inserting data: " + e.getMessage());
+            }
             // Execute the query
             ResultSet resultSet = preparedStatement.executeQuery();
+
+            String retrieve = "SELECT  `book_id`, `user_id`, `borrow_date`, `due_date`, `return_date`, `fine`, `en_key` FROM `borrow_records`";
+            try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(retrieve)) {
+
+             ResultSet resultSet = preparedStatement.executeQuery();
+                if (resultSet.next()) {
+
+                book_id = resultSet.getString("book_id");
+                user_id = resultSet.getString("user_id");
+                resultSet.getString("borrow_date");
+                resultSet.getString("due_date");
+                resultSet.getString("retrurn_date");
+                resultSet.getString("fine");
+                unwrappedkey = resultSet.getString("en_key");
+
+                }
+             }
+             catch(Exception e){
+            throw new RuntimeException("Error retrieving data: " + e.getMessage());
+            }
      */
 
 
