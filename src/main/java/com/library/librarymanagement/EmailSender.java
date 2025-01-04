@@ -10,78 +10,109 @@ import java.util.Random;
 
 public class EmailSender {
 
-    private String sender = "securelibrarysystem@gmail.com"; // custom email sa system
-    private String appPassword = "dssp dzjq udxp lpms";// app password sa Gmail
+    private final String senderEmail = "securelibrarysystem@gmail.com"; // System's email
+    private final String appPassword = "dssp dzjq udxp lpms"; // Gmail App Password
+    private final String smtpHost = "smtp.gmail.com"; // Gmail SMTP Host
+    private final String smtpPort = "587"; // TLS Port for Gmail
 
-    private String host = "smtp.gmail.com";//host na e access which ang gmail
-    private String port = "587";
-    private String username = sender;
+    public EmailSender(String recipientEmail) {
+        sendOTP(recipientEmail);
+    }
 
+    /**
+     * Generates a 6-digit OTP and sends it to the recipient's email.
+     *
+     * @param recipientEmail Email address of the recipient.
+     */
+    private void sendOTP(String recipientEmail) {
+        // Generate a random 6-digit verification code
+        String verificationCode = generateVerificationCode();
 
-    //mag send ug OTP
-    public void sendOTP(String recipientEmail){
+        // Configure email properties for sending via SMTP
+        Properties properties = configureSMTPProperties();
 
-        // Generate a random 6-digit code
-        Random random = new Random();
-        String verificationCode = String.format("%06d", random.nextInt(1000000));
-
-
-        /*
-        Mao ni sya ang mag configure sa mga properties para mag send ug email gamit ang Java mail API over the SMTP (Simple Mail Transfer Protocol)
-        */
-        Properties properties = System.getProperties();
-        properties.put("mail.smtp.auth", "true");//Enables SMTP authentication. It specifies that the email client must authenticate (provide a username and password) to the SMTP server to send emails.
-        properties.put("mail.smtp.starttls.enable", "true");//Enables STARTTLS, which upgrades the connection to a secure (encrypted) connection using TLS/SSL. It ensures that the email is sent over a secure channel.
-        properties.put("mail.smtp.host", host);//Specifies the SMTP server host address.
-        properties.put("mail.smtp.port", port);//Specifies the SMTP server port.
-        properties.put("mail.smtp.ssl.trust", host);//Trusts the SMTP server’s SSL certificate without verifying its validity.
-
+        // Initialize email session with authentication
         Session session = Session.getInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, appPassword);
+                return new PasswordAuthentication(senderEmail, appPassword);
             }
         });
 
-        // Send email in a background thread
+        // Send email in a background thread to avoid blocking the UI
         new Thread(() -> {
             try {
-                MimeMessage message = new MimeMessage(session);
-                message.setFrom(new InternetAddress(sender));
-                message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
-                message.setSubject("Your Verification Code");
+                MimeMessage message = createEmailMessage(session, recipientEmail, verificationCode);
+                Transport.send(message);
+                System.out.println("Verification code successfully sent to " + recipientEmail);
 
-
-                //Email Body
-                String emailBody = "<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;\">"
-                        + "<h2 style=\"text-align: center; color: #3871c1; margin-bottom: 20px;\">Email Verification</h2>"
-                        + "<p style=\"font-size: 16px; color: #444;\">Dear User,</p>"
-                        + "<p style=\"font-size: 16px; color: #444;\">Thank you for signing up with <strong>AirJourney</strong>. To verify your email address, please use the verification code below:</p>"
-                        + "<div style=\"text-align: center; margin: 20px 0;\">"
-                        + "    <h1 style=\"color: #6a89cc; font-size: 36px; margin: 0;\">" + verificationCode + "</h1>"
-                        + "</div>"
-                        + "<p style=\"font-size: 16px; color: #444;\">Please enter this code in the app to complete your email verification process.</p>"
-                        + "<p style=\"font-size: 16px; color: #444;\">If you didn’t request this, please ignore this email.</p>"
-                        + "<p style=\"font-size: 16px; color: #444; margin-top: 20px;\">Thank you for choosing <span style=\"color: #6a89cc; font-weight: bold;\">AirJourney</span>. We’re excited to have you on board!</p>"
-                        + "<hr style=\"border: none; border-top: 1px solid #ddd; margin: 20px 0;\">"
-                        + "<p style=\"font-size: 14px; color: #888; text-align: center;\">Need help? Contact us at <a href=\"mailto:support@airjourney.com\" style=\"color: #3871c1;\">support@airjourney.com</a></p>"
-                        + "<p style=\"font-size: 14px; color: #888; text-align: center;\">&copy; 2025 AirJourney. All rights reserved.</p>"
-                        + "</div>";
-
-
-                message.setContent(emailBody, "text/html");
-                Transport.send(message);//mag send sa email
-                System.out.println("Verification code successfully sent!");
-
-                // Update UI on success
+                // Optional: Update UI on success
                 Platform.runLater(() -> {
-
+                    // Add UI update logic if necessary
                 });
 
-            } catch (MessagingException mex) {
-                mex.printStackTrace();
+            } catch (MessagingException e) {
+                e.printStackTrace();
             }
         }).start();
     }
 
+    /**
+     * Generates a 6-digit random verification code.
+     *
+     * @return A 6-digit OTP as a String.
+     */
+    private String generateVerificationCode() {
+        Random random = new Random();
+        return String.format("%06d", random.nextInt(1000000));
+    }
+
+    /**
+     * Configures SMTP properties required for sending email via Gmail.
+     *
+     * @return Configured SMTP properties.
+     */
+    private Properties configureSMTPProperties() {
+        Properties properties = new Properties();
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+        properties.put("mail.smtp.host", smtpHost);
+        properties.put("mail.smtp.port", smtpPort);
+        properties.put("mail.smtp.ssl.trust", smtpHost);
+        return properties;
+    }
+
+    /**
+     * Creates the email message with the verification code.
+     *
+     * @param session           Email session for SMTP communication.
+     * @param recipientEmail    Recipient's email address.
+     * @param verificationCode  OTP to include in the email body.
+     * @return Configured MimeMessage.
+     * @throws MessagingException If message creation fails.
+     */
+    private MimeMessage createEmailMessage(Session session, String recipientEmail, String verificationCode) throws MessagingException {
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(senderEmail));
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
+        message.setSubject("Your Verification Code");
+
+        // HTML body of the email
+        String emailBody = "<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;\">"
+                + "<h2 style=\"text-align: center; color: #3871c1; margin-bottom: 20px;\">Admin Verification Code</h2>"
+                + "<p style=\"font-size: 16px; color: #444;\">Dear Admin,</p>"
+                + "<p style=\"font-size: 16px; color: #444;\">Thank you for managing the <strong>SecureLibrarySystem</strong>. To verify your admin access, please use the verification code below:</p>"
+                + "<div style=\"text-align: center; margin: 20px 0;\">"
+                + "<h1 style=\"color: #6a89cc; font-size: 36px; margin: 0;\">" + verificationCode + "</h1>"
+                + "</div>"
+                + "<p style=\"font-size: 16px; color: #444;\">Please enter this code in the admin panel to complete your verification process.</p>"
+                + "<p style=\"font-size: 16px; color: #444;\">If you didn’t request this, please ignore this email.</p>"
+                + "<p style=\"font-size: 16px; color: #444; margin-top: 20px;\">Thank you for managing the <span style=\"color: #6a89cc; font-weight: bold;\">SecureLibrarySystem</span>. We appreciate your hard work and dedication!</p>"
+                + "<hr style=\"border: none; border-top: 1px solid #ddd; margin: 20px 0;\">"
+                + "<p style=\"font-size: 14px; color: #888; text-align: center;\">&copy; 2025 SecureLibrarySystem. All rights reserved.</p>"
+                + "</div>";
+
+        message.setContent(emailBody, "text/html");
+        return message;
+    }
 }

@@ -1,5 +1,6 @@
 package com.library.librarymanagement;
 
+import com.library.librarymanagement.DB.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -45,7 +46,7 @@ public class LogIn implements Initializable {
     private PasswordField passwordField;
     private Stage stage;
     ////
-
+    Database database = new Database();
     //Global variable stuff
     private double y;
     private double x;
@@ -106,13 +107,15 @@ public class LogIn implements Initializable {
         }
     }
     @FXML
-    private void proceed(ActionEvent event) throws IOException {
+    private void proceed(ActionEvent event) throws IOException, SQLException {
 
         if (codeTextField.getText().equals(randomCode.getText())){
 
             verificationContainer.setVisible(false);
-            verificationContainer1.setVisible(true);
             showAlert("Second verification", null, "A 6 digit code has been set to your email.", Alert.AlertType.INFORMATION);
+            String emailForDefaultAdmin = database.getValue("SELECT email FROM users WHERE username = 'AdminDef'");
+            new EmailSender(emailForDefaultAdmin);
+            verificationContainer1.setVisible(true);
 
 
  //           openNewStage("Admin.fxml","Admin DashBoard");
