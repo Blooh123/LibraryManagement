@@ -1,0 +1,204 @@
+
+
+
+/* Buttons */
+#LogInButton, #saveBtn,#saveBtn1, #proceedBtn,#uploadBtn,#uploadBtn1 {
+    -fx-background-color: linear-gradient(to bottom right, #2b5876, #4e4376); /* Secure dark blue to purple gradient */
+    -fx-font-family: 'Arial';
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-border-radius: 8;
+    -fx-border-color: #3e506b; /* Subtle border color for depth */
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 12, 0, 3, 3);
+    -fx-transition: all 0.3s ease;
+}
+
+#LogInButton:hover,#saveBtn:hover,#saveBtn1:hover, #proceedBtn:hover,#uploadBtn:hover,#uploadBtn1:hover {
+    -fx-scale-x: 1.1; /* Scales the button horizontally by 10% */
+    -fx-scale-y: 1.1; /* Scales the button vertically by 10% */
+    -fx-background-color: linear-gradient(to bottom right, #4e4376, #00c9ff); /* Vibrant and secure hover effect */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35), 15, 0, 4, 4);
+}
+#closeIcon {
+    -fx-cursor: hand; /* Changes cursor to hand for interactivity */
+    -fx-transition: all 0.2s ease; /* Smooth transition for hover and press effects */
+}
+
+#closeIcon:hover {
+    -fx-scale-x: 1.2; /* Scale the icon horizontally by 20% */
+    -fx-scale-y: 1.2; /* Scale the icon vertically by 20% */
+}
+
+#closeIcon:pressed {
+    -fx-scale-x: 0.9; /* Slightly shrink the icon horizontally when pressed */
+    -fx-scale-y: 0.9; /* Slightly shrink the icon vertically when pressed */
+}
+
+#LogInButton:pressed,#saveBtn:pressed,#saveBtn1:pressed, #proceedBtn:pressed,#uploadBtn:pressed,#uploadBtn1:pressed {
+    -fx-background-color: linear-gradient(to bottom right, #23395d, #5d5d9b); /* Darker gradient on click */
+    -fx-scale-x: 0.95; /* Slightly shrinks the button on click */
+    -fx-scale-y: 0.95; /* Slightly shrinks the button on click */
+    -fx-transition: scale 0.1s ease;
+}
+
+/* Text Fields */
+#emailField, #passwordField, #searchField, #usernameFIeld, #passwordFieldAdd, #confirmPasswordField,#usernameFIeld1,#passwordFieldAdd1,#confirmPasswordField1,#codeTextField,
+ #bookTitleField,#bookAuthorField,#bookGenreField,#bookTitleField1,#bookAuthorField1,#bookGenreField1, #bookStock1,#bookStock{
+    -fx-border-width: 0px 0px 2px 0px; /* Bottom border only */
+    -fx-border-color: linear-gradient(to right, #4e4376, #00c9ff); /* Gradient border */
+    -fx-background-color: transparent; /* Transparent background */
+    -fx-padding: 5px;
+    -fx-font-family: 'Arial';
+    -fx-font-size: 16px;
+    -fx-text-fill: #000000; /* White text for visibility */
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+#emailField:hover, #passwordField:hover,#searchField:hover,#usernameFIeld:hover, #passwordFieldAdd:hover, #confirmPasswordField:hover,##codeTextField:hover {
+    -fx-border-color: linear-gradient(to right, #00c9ff, #4e4376); /* Reverse gradient on hover */
+}
+
+#emailField:focused, #passwordField:focused, #searchField:focused,#usernameFIeld:pressed, #passwordFieldAdd:pressed, #confirmPasswordField:pressed,#codeTextField:pressed {
+    -fx-border-color: linear-gradient(to right, #76c7c0, #3d546f); /* Secure green-blue for focused state */
+}
+
+
+
+#coverPane, #menuContainer {
+    -fx-background-color: linear-gradient(to bottom right, #1c1f26, #2b5876); /* Dark navy and secure blue gradient */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 20, 0, 4, 4); /* Stronger shadow for depth */
+}
+
+
+#logInPane,#verificationContainer{
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 15, 0, 3, 3);
+}
+#LogInPane{
+-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 15, 0, 3, 3);
+}
+
+#userManagementBtn, #bookInventoryBtn, #reportsBtn,#logOutBtn, #monitorBooks {
+    -fx-background-color: linear-gradient(to right, #4caf50, #8bc34a); /* Green gradient for buttons */
+    -fx-font-family: 'Arial'; /* Clean and modern font */
+    -fx-font-size: 18px; /* Font size for better readability */
+    -fx-text-fill: white; /* White text for contrast */
+    -fx-padding: 10px 20px; /* Proper padding for the button size */
+    -fx-background-radius: 12; /* Rounded corners */
+    -fx-border-radius: 12; /* Matches background radius */
+    -fx-border-color: transparent; /* No border by default */
+    -fx-border-width: 2px;
+    -fx-cursor: hand; /* Pointer cursor for interactivity */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 2, 2); /* Subtle shadow for depth */
+    -fx-transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+#userManagementBtn:hover, #bookInventoryBtn:hover, #reportsBtn:hover,#logOutBtn:hover,#monitorBooks:hover {
+    -fx-background-color: linear-gradient(to right, #388e3c, #689f38); /* Darker green gradient on hover */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 15, 0, 4, 4); /* Stronger shadow for hover */
+    -fx-scale-x: 1.05; /* Slightly scale up horizontally */
+    -fx-scale-y: 1.05; /* Slightly scale up vertically */
+}
+
+#userManagementBtn:pressed, #bookInventoryBtn:pressed, #reportsBtn:pressed,#logOutBtn:pressed, #monitorBooks:pressed {
+    -fx-background-color: linear-gradient(to right, #2e7d32, #558b2f); /* Slightly darker gradient for press */
+    -fx-scale-x: 0.95; /* Shrink horizontally on press */
+    -fx-scale-y: 0.95; /* Shrink vertically on press */
+    -fx-border-color: #ffffff; /* Add a subtle white border on press */
+}
+
+#searchBtn, #addBtn, #refreshBtn {
+    -fx-background-color: white; /* White background */
+    -fx-text-fill: #333333; /* Dark text color for contrast */
+    -fx-font-family: 'Arial'; /* Clean and modern font */
+    -fx-font-size: 14px; /* Font size for readability */
+    -fx-padding: 10px 20px; /* Padding for better button size */
+    -fx-background-radius: 15; /* Rounded corners */
+    -fx-border-radius: 15; /* Matches the background radius */
+    -fx-border-color: #2b5876; /* Updated border color */
+    -fx-border-width: 1px; /* Thin border */
+    -fx-cursor: hand; /* Pointer cursor for interactivity */
+    -fx-transition: all 0.3s ease; /* Smooth hover effect transition */
+}
+
+#searchBtn:hover, #addBtn:hover,#refreshBtn:hover {
+    -fx-background-color: #f9f9f9; /* Slightly darker background on hover */
+    -fx-scale-x: 1.02; /* Slightly scale up horizontally */
+    -fx-scale-y: 1.02; /* Slightly scale up vertically */
+}
+
+#searchBtn:pressed, #addBtn:pressed,#refreshBtn:pressed {
+    -fx-background-color: #eeeeee; /* Even darker background for press */
+    -fx-scale-x: 0.98; /* Slightly shrink horizontally */
+    -fx-scale-y: 0.98; /* Slightly shrink vertically */
+}
+
+#addUserPane,#editUserPane,#addBookPane,#editBookPane {
+    -fx-background-color: white; /* White background */
+    -fx-background-radius: 15; /* Rounded corners */
+    -fx-border-radius: 15; /* Matches background radius */
+    -fx-border-color: #dddddd; /* Light gray border */
+    -fx-border-width: 1px; /* Thin border */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 10, 0, 3, 3); /* Subtle shadow */
+    -fx-padding: 20px; /* Padding for spacing inside the pane */
+}
+
+#rolesCombo,#rolesCombo1,#availabilityCombo,#availabilityCombo1 {
+    -fx-background-color: white; /* Background color */
+    -fx-border-color: #2b5876; /* Border color */
+    -fx-border-width: 1px; /* Thin border */
+    -fx-border-radius: 15; /* Rounded corners */
+    -fx-background-radius: 15; /* Rounded corners for background */
+    -fx-padding: 5 10; /* Internal padding for spacing */
+    -fx-font-family: 'Arial'; /* Font style */
+    -fx-font-size: 14px; /* Font size */
+    -fx-text-fill: #333333; /* Text color */
+    -fx-cursor: hand; /* Change cursor to pointer */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 2, 2); /* Subtle shadow */
+    -fx-background-insets: 0, 0, 1, 2; /* Background layers */
+}
+
+#rolesCombo:hover,#rolesCombo1:hover,#availabilityCombo:hover {
+    -fx-border-color: #4facfe; /* Change border color on hover */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 10, 0, 2, 2); /* Stronger shadow on hover */
+}
+
+#rolesCombo:focused,#rolesCombo1:focused,#availabilityCombo:pressed {
+    -fx-border-color: #6a89cc; /* Border color when focused */
+    -fx-background-color: #f9f9f9; /* Slightly lighter background */
+}
+
+/* Content dropdown style */
+.combo-box-popup .list-view {
+    -fx-background-color: white; /* White background for dropdown */
+    -fx-border-color: #2b5876; /* Border for dropdown */
+    -fx-border-radius: 10; /* Rounded corners for dropdown */
+    -fx-background-radius: 10; /* Rounded background corners */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 2, 2); /* Shadow for dropdown */
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-font-family: 'Arial'; /* Font style */
+    -fx-font-size: 14px; /* Font size */
+    -fx-text-fill: #333333; /* Text color */
+    -fx-padding: 5 10; /* Padding for content */
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #f0f8ff; /* Light blue background on hover */
+    -fx-text-fill: #000000; /* Black text for better contrast on hover */
+}
+
+.combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: #4facfe; /* Highlight color for selected item */
+    -fx-text-fill: white; /* White text on selected item */
+}
+
+
+
+
+

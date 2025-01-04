@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="1079.0" prefWidth="1456.0" style="-fx-background-color: white;" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.librarymanagement.AdminBookInventory">
+   <children>
+      <TextField fx:id="searchField" layoutX="739.0" layoutY="50.0" prefHeight="62.0" prefWidth="340.0" promptText="Search" stylesheets="@Style.css">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <Button fx:id="searchBtn" layoutX="1118.0" layoutY="50.0" mnemonicParsing="false" onAction="#searchAction" prefHeight="70.0" prefWidth="79.0" stylesheets="@Style.css" />
+      <Button fx:id="addBtn" layoutX="1217.0" layoutY="50.0" mnemonicParsing="false" onAction="#addBookAction" prefHeight="70.0" prefWidth="79.0" stylesheets="@Style.css" />
+      <Button fx:id="refreshBtn" layoutX="1318.0" layoutY="50.0" mnemonicParsing="false" onAction="#refreshPage" prefHeight="70.0" prefWidth="79.0" stylesheets="@Style.css" />
+      <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="82.0" layoutY="230.0" prefHeight="784.0" prefWidth="1305.0" style="-fx-background: white; -fx-background-color: white;" vbarPolicy="NEVER">
+         <content>
+            <AnchorPane fx:id="mainContainer" minHeight="0.0" minWidth="0.0" prefHeight="2.0" prefWidth="1305.0" style="-fx-background-color: white;" />
+         </content>
+      </ScrollPane>
+      <Label layoutX="108.0" layoutY="188.0" text="ID" textFill="#2b5876">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="316.0" layoutY="188.0" text="Title" textFill="#2b5876">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="565.0" layoutY="188.0" text="Author" textFill="#2b5876">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="813.0" layoutY="188.0" text="Genre" textFill="#2b5876">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <AnchorPane fx:id="addBookPane" layoutX="172.0" layoutY="162.0" prefHeight="774.0" prefWidth="1136.0" style="-fx-background-color: white;">
+         <children>
+            <Label layoutX="133.0" layoutY="37.0" text="Add Book" textFill="#2b5876">
+               <font>
+                  <Font name="System Bold" size="37.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="82.0" fitWidth="109.0" layoutX="33.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../Icons/BookIcon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="62.0" fitWidth="40.0" layoutX="1054.0" layoutY="38.0" onMouseClicked="#closeAddbookPane" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../Icons/CloseIcon.png" />
+               </image>
+            </ImageView>
+            <TextField fx:id="bookTitleField" layoutX="444.0" layoutY="173.0" prefHeight="53.0" prefWidth="324.0" promptText="Book Title" />
+            <ComboBox fx:id="availabilityCombo" layoutX="833.0" layoutY="175.0" prefHeight="53.0" prefWidth="249.0" promptText="Select Availability" />
+            <Label layoutX="826.0" layoutY="138.0" text="Availability">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button fx:id="saveBtn" layoutX="443.0" layoutY="526.0" mnemonicParsing="false" onAction="#SaveBook" prefHeight="62.0" prefWidth="173.0" text="Save" />
+            <TextField fx:id="bookAuthorField" layoutX="444.0" layoutY="269.0" prefHeight="53.0" prefWidth="324.0" promptText="Book Author" />
+            <TextField fx:id="bookGenreField" layoutX="444.0" layoutY="371.0" prefHeight="53.0" prefWidth="324.0" promptText="Book Genre" />
+            <VBox layoutX="114.0" layoutY="169.0" prefHeight="286.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="coverImage" fitHeight="286.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                  <Button fx:id="uploadBtn" mnemonicParsing="false" onAction="#uploadImage" prefHeight="25.0" prefWidth="203.0" text="Upload Image" />
+               </children>
+            </VBox>
+            <TextField fx:id="bookStock" layoutX="835.0" layoutY="269.0" prefHeight="53.0" prefWidth="150.0" promptText="Book stock" />
+         </children>
+      </AnchorPane>
+      <Label layoutX="178.0" layoutY="53.0" text="Book Inventory" textFill="#2b5876">
+         <font>
+            <Font name="System Bold" size="37.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="82.0" fitWidth="109.0" layoutX="63.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../Icons/BookIcon.png" />
+         </image>
+      </ImageView>
+      <AnchorPane fx:id="editBookPane" layoutX="172.0" layoutY="162.0" prefHeight="774.0" prefWidth="1136.0" style="-fx-background-color: white;">
+         <children>
+            <Label layoutX="133.0" layoutY="37.0" text="Edit Book" textFill="#2b5876">
+               <font>
+                  <Font name="System Bold" size="37.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="82.0" fitWidth="109.0" layoutX="33.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../Icons/BookIcon.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="62.0" fitWidth="40.0" layoutX="1054.0" layoutY="38.0" onMouseClicked="#closeEditPane" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../Icons/CloseIcon.png" />
+               </image>
+            </ImageView>
+            <TextField fx:id="bookTitleField1" layoutX="444.0" layoutY="173.0" prefHeight="53.0" prefWidth="324.0" promptText="Book Title" />
+            <ComboBox fx:id="availabilityCombo1" layoutX="833.0" layoutY="175.0" prefHeight="53.0" prefWidth="249.0" promptText="Select Availability" />
+            <Label layoutX="826.0" layoutY="138.0" text="Availability">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button fx:id="saveBtn1" layoutX="443.0" layoutY="526.0" mnemonicParsing="false" onAction="#saveEditedBook" prefHeight="62.0" prefWidth="173.0" text="Save" />
+            <TextField fx:id="bookAuthorField1" layoutX="444.0" layoutY="269.0" prefHeight="53.0" prefWidth="324.0" promptText="Book Author" />
+            <TextField fx:id="bookGenreField1" layoutX="444.0" layoutY="371.0" prefHeight="53.0" prefWidth="324.0" promptText="Book Genre" />
+            <VBox layoutX="114.0" layoutY="169.0" prefHeight="286.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="coverImage1" fitHeight="274.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                  <Button fx:id="uploadBtn1" mnemonicParsing="false" onAction="#uploadImage1" prefHeight="25.0" prefWidth="203.0" text="Upload Image" />
+               </children>
+            </VBox>
+            <TextField fx:id="bookStock1" layoutX="834.0" layoutY="269.0" prefHeight="53.0" prefWidth="150.0" promptText="Book stock" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
