@@ -149,28 +149,17 @@ public class StudentDashBoard implements Initializable {
         return bookCard;
     }
     private void borrowBook(Book book) throws IOException {
-        openBorrowBookDetails();
-        String queryForUpdateBook = "UPDATE books " +
-                "SET stock = stock - 1, " +
-                "availability = CASE WHEN stock = 0 THEN 0 ELSE availability END " +  // Only update availability when stock hits 0
-                "WHERE title = ? AND stock > 0";
+        openBorrowBookDetails(book);
 
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/secureLibrary", "root", "");
-             PreparedStatement pstmt = conn.prepareStatement(queryForUpdateBook)) {
-            pstmt.setString(1, book.getTitle());
-
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            showAlert("Error", null, "An error occurred while borrowing the book.", Alert.AlertType.ERROR);
-        }
     }
 
-    private void openBorrowBookDetails() throws IOException {
+    private void openBorrowBookDetails(Book book) throws IOException {
         Stage currentStage = (Stage) bookGrid.getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("BorrowingBook.fxml"));
         Parent root = loader.load();
+
+        BorrowingBook borrowingBook  = loader.getController();
+        borrowingBook.setTitleAndAuthor(book.getTitle(),book.getAuthor());
 
         Scene scene = new Scene(root);
         Stage newStage = new Stage();
@@ -182,11 +171,6 @@ public class StudentDashBoard implements Initializable {
         newStage.setTitle("Secure Library");
         newStage.show();
     }
-
-
-
-
-
 
 
     private List<Book> getAvailableBooksFromDatabase() {

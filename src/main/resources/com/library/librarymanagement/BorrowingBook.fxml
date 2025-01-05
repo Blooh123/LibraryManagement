@@ -1,31 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="501.0" prefWidth="834.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.librarymanagement.BorrowingBook">
+<AnchorPane prefHeight="661.0" prefWidth="1094.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.librarymanagement.BorrowingBook">
 
     <!-- Dialog Window for Borrowing Book -->
-    <AnchorPane fx:id="borrowDialog" layoutX="36.0" layoutY="36.0" prefHeight="432.0" prefWidth="762.0" style="-fx-background-color: white; -fx-border-color: black;">
-        <Label layoutX="10.0" layoutY="10.0" style="-fx-font-size: 18;" text="Borrow Book" />
-        <TextField fx:id="bookTitleField" layoutX="13.0" layoutY="66.0" prefWidth="200.0" promptText="Title" />
-        <TextField fx:id="bookAuthorField" layoutX="13.0" layoutY="116.0" prefWidth="200.0" promptText="Author" />
-        <TextField fx:id="quantityField" layoutX="13.0" layoutY="168.0" prefHeight="32.0" prefWidth="200.0" promptText="Enter Quantity" />
+    <AnchorPane fx:id="borrowDialog" layoutX="36.0" layoutY="36.0" prefHeight="586.0" prefWidth="1021.0" style="-fx-background-color: white; -fx-border-color: black;">
+        <TextField fx:id="bookTitleField" editable="false" focusTraversable="false" layoutX="45.0" layoutY="92.0" prefHeight="38.0" prefWidth="236.0" promptText="Title" />
+        <TextField fx:id="bookAuthorField" editable="false" focusTraversable="false" layoutX="45.0" layoutY="166.0" prefHeight="38.0" prefWidth="236.0" promptText="Author" />
+        <TextField fx:id="quantityField" focusTraversable="false" layoutX="45.0" layoutY="276.0" prefHeight="38.0" prefWidth="236.0" promptText="Enter Quantity" />
 
         <!-- Button to confirm borrowing -->
-        <Button fx:id="confirmBorrowButton" layoutX="18.0" layoutY="380.0" onAction="#handleConfirmBorrow" text="Confirm Borrow" />
+        <Button fx:id="confirmBorrowButton" layoutX="50.0" layoutY="502.0" onAction="#handleConfirmBorrow" prefHeight="40.0" prefWidth="103.0" text="Confirm Borrow" />
 
         <!-- Button to close the dialog -->
-        <Button fx:id="closeDialogButton" layoutX="146.0" layoutY="380.0" onAction="#handleCloseDialog" text="Cancel" />
-      <Label layoutX="14.0" layoutY="46.0" text="Book Title" />
-      <Label layoutX="14.0" layoutY="97.0" text="Book Author" />
-      <DatePicker fx:id="duedate" layoutX="13.0" layoutY="230.0" />
-      <Label layoutX="14.0" layoutY="149.0" text="Quantity" />
-      <Label layoutX="13.0" layoutY="259.0" text="Note: If the book borrowed not return in time. You will be fine." textFill="RED">
+        <Button fx:id="closeDialogButton" layoutX="178.0" layoutY="502.0" onAction="#handleCloseDialog" prefHeight="40.0" prefWidth="103.0" text="Cancel" />
+      <Label layoutX="46.0" layoutY="72.0" text="Book Title" />
+      <Label layoutX="46.0" layoutY="147.0" text="Book Author" />
+      <DatePicker fx:id="duedate" focusTraversable="false" layoutX="45.0" layoutY="360.0" prefHeight="38.0" prefWidth="236.0" />
+      <Label layoutX="46.0" layoutY="257.0" text="Quantity" />
+      <Label layoutX="45.0" layoutY="402.0" text="Note: If the book borrowed not return on time. You will be fine." textFill="RED">
          <font>
             <Font name="System Italic" size="12.0" />
          </font>
       </Label>
+      <Label layoutX="43.0" layoutY="18.0" text="Borrow Book">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="355.0" fitWidth="477.0" layoutX="498.0" layoutY="95.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../Images/ImageLibrary.png" />
+         </image>
+      </ImageView>
     </AnchorPane>
 </AnchorPane>
