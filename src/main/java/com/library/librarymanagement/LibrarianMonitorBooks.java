@@ -4,6 +4,7 @@ import com.library.librarymanagement.DB.Database;
 import com.library.librarymanagement.Enity.BorrowRecord;
 import com.library.librarymanagement.SecurityUtils.SecurityUtils;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -39,6 +40,8 @@ public class LibrarianMonitorBooks implements Initializable {
 
     @FXML
     private ScrollPane scrollPane;
+    @FXML
+    private  Button recieveBorrowedBooksBtn;
     private String query = "SELECT * FROM borrow_records";
 
     private void loadAllRecords(String query) {
@@ -218,7 +221,10 @@ public class LibrarianMonitorBooks implements Initializable {
         mainContainer.getChildren().add(dataPane);
         mainContainer.setPrefHeight((index + 1) * 400); // Adjust container height
     }
+    @FXML private void recievedBook(ActionEvent event) {
 
+        System.out.println("Recieved Book");
+    }
 
 
 
