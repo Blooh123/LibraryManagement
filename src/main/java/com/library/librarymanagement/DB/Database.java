@@ -23,7 +23,7 @@ public class Database {
     }
     public void addDefaultAdmin(){
         connectToDB();
-        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users(username, password, role,email) VALUES('AdminDef', SHA2('12345', 256), 'Super Admin', 'ddtiongson00006@usep.edu.ph')", PreparedStatement.RETURN_GENERATED_KEYS)){
+        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users(username, password, role,email) VALUES('AdminDef', SHA2('12345', 256), 'Super Admin', 'vrtrgucor00037@usep.edu.ph')", PreparedStatement.RETURN_GENERATED_KEYS)){
             preparedStatement.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();

@@ -98,8 +98,9 @@ public class LogIn implements Initializable {
                 verificationContainer.setVisible(true);
                 randomCode.setText(generateRandomCode());
         }else if (role.equalsIgnoreCase("Librarian")){
-            showAlert("Success", null, "Login successfully! Role: " + role, Alert.AlertType.INFORMATION);
-            openNewStage("Librarian.fxml","Librarian Dashboard");
+            verificationContainer.setVisible(true);
+            randomCode.setText(generateRandomCode());
+
         } else if (role.equalsIgnoreCase("Student")) {
             showAlert("Success", null, "Login successfully! Role: " + role, Alert.AlertType.INFORMATION);
             openNewStage("StudentDashBoard.fxml","Student Dashboard");
@@ -114,10 +115,13 @@ public class LogIn implements Initializable {
             String emailForUsers = database.getValue("SELECT email FROM users WHERE username = '" + emailField.getText() + "'");
             new EmailSender(emailForUsers);
             verificationContainer1.setVisible(true);
+        }
 
-
-
- //
+        if (role.equalsIgnoreCase("Librarian")){
+            if (codeTextField.getText().equals(randomCode.getText())){
+                showAlert("Success", null, "Login successfully! Role: " + role, Alert.AlertType.INFORMATION);
+                openNewStage("Librarian.fxml","Librarian Dashboard");
+            }
 
         }
     }
