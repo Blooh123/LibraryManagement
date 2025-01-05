@@ -68,6 +68,7 @@
                </font>
             </Label>
             <Button fx:id="saveBtn" layoutX="164.0" layoutY="526.0" mnemonicParsing="false" onAction="#SaveUser" prefHeight="62.0" prefWidth="173.0" text="Save" />
+            <TextField fx:id="emailField" layoutX="594.0" layoutY="281.0" prefHeight="53.0" prefWidth="324.0" promptText="Email" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="editUserPane" layoutX="162.0" layoutY="152.0" prefHeight="774.0" prefWidth="1136.0" style="-fx-background-color: white;">
@@ -97,6 +98,7 @@
                </font>
             </Label>
             <Button fx:id="saveBtn1" layoutX="164.0" layoutY="526.0" mnemonicParsing="false" onAction="#saveEditedUser" prefHeight="62.0" prefWidth="173.0" text="Save" />
+            <TextField fx:id="emailField1" layoutX="593.0" layoutY="281.0" prefHeight="53.0" prefWidth="324.0" promptText="Email" />
          </children>
       </AnchorPane>
       <ImageView fitHeight="82.0" fitWidth="109.0" layoutX="63.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
@@ -109,5 +111,7 @@
             <Font name="System Bold" size="37.0" />
          </font>
       </Label>
+      <Label fx:id="usernameLabel" layoutX="183.0" layoutY="30.0" opacity="0.0" text="Label" />
+      <Label fx:id="roleLabel" layoutX="244.0" layoutY="38.0" opacity="0.0" text="Label" />
    </children>
 </AnchorPane>

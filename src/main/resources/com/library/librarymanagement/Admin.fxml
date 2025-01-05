@@ -17,7 +17,7 @@
                   <Image url="@../../../Images/LibraryManagement.png" />
                </image>
             </ImageView>
-            <Label layoutX="105.0" layoutY="306.0" text="Welcome," textFill="WHITE">
+            <Label layoutX="10.0" layoutY="306.0" prefHeight="46.0" prefWidth="169.0" text="Welcome," textFill="WHITE">
                <font>
                   <Font name="System Bold" size="31.0" />
                </font>
@@ -30,12 +30,12 @@
             <Button fx:id="bookInventoryBtn" contentDisplay="RIGHT" layoutX="-21.0" layoutY="541.0" mnemonicParsing="false" onAction="#bookInventoryAction" prefHeight="77.0" prefWidth="375.0" text="Book Inventory" />
             <Button fx:id="reportsBtn" contentDisplay="RIGHT" layoutX="-21.0" layoutY="648.0" mnemonicParsing="false" onAction="#reportsAction" prefHeight="77.0" prefWidth="375.0" text="Reports" />
             <Button fx:id="logOutBtn" contentDisplay="RIGHT" layoutX="-21.0" layoutY="756.0" mnemonicParsing="false" onAction="#logOutAction" prefHeight="77.0" prefWidth="375.0" text="Log out" />
-            <Label fx:id="usernameLabel" layoutX="145.0" layoutY="351.0" text="UserName" textFill="WHITE">
+            <Label fx:id="usernameLabel" layoutX="161.0" layoutY="306.0" prefHeight="46.0" prefWidth="282.0" text="###" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="31.0" />
                </font>
             </Label>
-            <Label fx:id="roleLabel" layoutX="257.0" layoutY="305.0" text="Role" textFill="WHITE">
+            <Label fx:id="roleLabel" layoutX="12.0" layoutY="353.0" text="Role" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="31.0" />
                </font>
@@ -43,4 +43,15 @@
          </children>
       </AnchorPane>
    </left>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="462.0" fitWidth="806.0" layoutX="531.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../Images/ImageLibrary.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </center>
 </BorderPane>

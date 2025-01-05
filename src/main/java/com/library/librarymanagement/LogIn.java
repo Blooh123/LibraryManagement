@@ -59,7 +59,6 @@ public class LogIn implements Initializable {
 
     @FXML
     private void close(MouseEvent event){
-        System.out.println("bilat");
         Stage currentStage = (Stage) closeIcon.getScene().getWindow();
         currentStage.close();
     }
@@ -112,8 +111,8 @@ public class LogIn implements Initializable {
         if (codeTextField.getText().equals(randomCode.getText())){
             verificationContainer.setVisible(false);
             showAlert("Second verification", null, "A 6 digit code has been set to your email.", Alert.AlertType.INFORMATION);
-            String emailForDefaultAdmin = database.getValue("SELECT email FROM users WHERE username = 'AdminDef'");
-            new EmailSender(emailForDefaultAdmin);
+            String emailForUsers = database.getValue("SELECT email FROM users WHERE username = '" + emailField.getText() + "'");
+            new EmailSender(emailForUsers);
             verificationContainer1.setVisible(true);
 
 
@@ -152,8 +151,10 @@ public class LogIn implements Initializable {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
         Parent root = fxmlLoader.load();
 
-        Admin admin = fxmlLoader.getController();
-        admin.setRoleAndUsername(role,emailField.getText());
+        if (role.equalsIgnoreCase("Super Admin") || role.equalsIgnoreCase("Admin")){
+            Admin admin = fxmlLoader.getController();
+            admin.setRoleAndUsername(role,emailField.getText());
+        }
 
         Scene scene = new Scene(root);
         Stage stage1 = new Stage();

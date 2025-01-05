@@ -38,17 +38,22 @@ public class AdminUserManagement implements Initializable {
     @FXML
     private AnchorPane mainContainer,addUserPane,editUserPane;
     @FXML
-    private TextField searchField,usernameFIeld,passwordFieldAdd,confirmPasswordField,usernameFIeld1,passwordFieldAdd1,confirmPasswordField1;
+    private TextField searchField,usernameFIeld,passwordFieldAdd,confirmPasswordField,usernameFIeld1,passwordFieldAdd1,confirmPasswordField1,emailField1,emailField;
     @FXML
     private ComboBox<String> rolesCombo,rolesCombo1;
+    @FXML
+    private Label usernameLabel,roleLabel;
 
     private String userName;
     private String userRole;
 
 
     public void setRoleAndUsername(String username, String userRole){
+        System.out.println(username + " user management");
         this.userName = username;
         this.userRole = userRole;
+        usernameLabel.setText(username);
+        roleLabel.setText(userRole);
     }
 
     private String loadRecordsQuery = "SELECT * FROM users";
@@ -58,8 +63,8 @@ public class AdminUserManagement implements Initializable {
         setButtonIcon(addBtn, "/Icons/PlusIcon.png", 35, 35);
         setButtonIcon(refreshBtn, "/Icons/ReloadIcon.png", 35, 35);
 
-        rolesCombo.getItems().addAll("Admin", "Librarian", "Student");
-        rolesCombo1.getItems().addAll("Admin", "Librarian", "Student");
+//        rolesCombo.getItems().addAll("Admin", "Librarian", "Student");
+//        rolesCombo1.getItems().addAll("Admin", "Librarian", "Student");
 
         addUserPane.setLayoutY(-800);
         editUserPane.setLayoutY(-800);
@@ -79,6 +84,14 @@ public class AdminUserManagement implements Initializable {
         searchBtn.setDisable(true);
         searchField.setDisable(true);
         animatePane(addUserPane,0,900,200);
+
+
+
+        if (roleLabel.getText().equalsIgnoreCase("Admin")){
+            rolesCombo.getItems().setAll("Librarian", "Student");
+        }else {
+            rolesCombo.getItems().setAll("Admin", "Librarian", "Student");
+        }
     }
     @FXML
     private void closeAdduserPane(MouseEvent event){
@@ -103,6 +116,7 @@ public class AdminUserManagement implements Initializable {
         usernameFIeld1.clear();
         passwordFieldAdd1.clear();
         confirmPasswordField1.clear();
+        emailField1.clear();
     }
 
     @FXML
@@ -110,8 +124,9 @@ public class AdminUserManagement implements Initializable {
         String username = usernameFIeld.getText();
         String password = new String(passwordFieldAdd.getText());
         String role = rolesCombo.getValue();
+        String email = emailField.getText();
         String confirmPassword = new String(confirmPasswordField.getText());
-        if ((username.isEmpty() || username.isBlank()) || (password.isEmpty() || password.isBlank()) || (confirmPassword.isEmpty() || confirmPassword.isBlank())){
+        if ((username.isEmpty() || username.isBlank()) || (password.isEmpty() || password.isBlank()) || (confirmPassword.isEmpty() || confirmPassword.isBlank()) || (email.isEmpty() || email.isBlank())){
             showAlert("Unable to proceed", null, "Please fill out all the fields!", Alert.AlertType.INFORMATION);
             return;
         }
@@ -128,13 +143,21 @@ public class AdminUserManagement implements Initializable {
             return;
         }
 
+        if (database.checkIfEmailExists(email)){
+            showAlert("Unable to proceed", null, "Email already exists!", Alert.AlertType.INFORMATION);
+            return;
+        }
 
 
-        database.addUser(username,password,role);
+
+        database.addUser(username,password,role, email);
+
+
         showAlert("Success",null, "Added successfully!", Alert.AlertType.INFORMATION);
         usernameFIeld.clear();
         passwordFieldAdd.clear();
         confirmPasswordField.clear();
+        emailField.clear();
         animatePane(addUserPane,0,-900,400);
         mainContainer.setDisable(false);
         addBtn.setDisable(false);
@@ -151,18 +174,22 @@ public class AdminUserManagement implements Initializable {
         String username = usernameFIeld1.getText();
         String password = new String(passwordFieldAdd1.getText());
         String role = rolesCombo1.getValue();
+        String email = emailField1.getText();
         String confirmPassword = new String(confirmPasswordField1.getText());
-        if ((username.isEmpty() || username.isBlank())){
-            showAlert("Unable to proceed", null, "Please fill out all the username!", Alert.AlertType.INFORMATION);
+        if ((username.isEmpty() || username.isBlank()) || (email.isEmpty() || email.isBlank())){
+            showAlert("Unable to proceed", null, "Please fill out all the fields!", Alert.AlertType.INFORMATION);
             return;
         }
         if (!password.equals(confirmPassword)){
             showAlert("Unable to proceed", null, "Password did not match!", Alert.AlertType.INFORMATION);
             return;
         }
+
+
+
         if (database.checkIfActualUser(ID,username)){
             if (!password.isEmpty()){
-                database.updateUser(ID,username,password,role);
+                database.updateUser(ID,username,password,role,email);
                 showAlert("Success",null, "Saved successfully!", Alert.AlertType.INFORMATION);
                 usernameFIeld1.clear();
                 passwordFieldAdd1.clear();
@@ -177,7 +204,7 @@ public class AdminUserManagement implements Initializable {
                 loadAllRecords(loadRecordsQuery);
                 return;
             }else {
-                database.updateUser(ID,username,role);
+                database.updateUser(ID,username,role,email);
                 showAlert("Success",null, "Saved successfully!", Alert.AlertType.INFORMATION);
                 usernameFIeld1.clear();
                 passwordFieldAdd1.clear();
@@ -193,16 +220,23 @@ public class AdminUserManagement implements Initializable {
                 return;
             }
         }
+
         if (database.checkIfUsernameExists(username)){
             showAlert("Unable to proceed", null, "Username already exists!", Alert.AlertType.INFORMATION);
             return;
         }
+        if (database.checkIfEmailExists(email)){
+            showAlert("Unable to proceed", null, "Email already exists!", Alert.AlertType.INFORMATION);
+            return;
+        }
 
-        database.updateUser(ID,username,password,role);
+
+        database.updateUser(ID,username,password,role, email);
         showAlert("Success",null, "Saved successfully!", Alert.AlertType.INFORMATION);
         usernameFIeld1.clear();
         passwordFieldAdd1.clear();
         confirmPasswordField1.clear();
+        emailField1.clear();
         animatePane(editUserPane,0,-900,400);
         mainContainer.setDisable(false);
         addBtn.setDisable(false);
@@ -236,11 +270,14 @@ public class AdminUserManagement implements Initializable {
                 while (resultSet.next()) {
                     check = true;
                     if(!resultSet.getString("role").equalsIgnoreCase("Super Admin")){
-                        userDataList.add(new UserData(
-                                resultSet.getInt("id"),
-                                resultSet.getString("username"),
-                                resultSet.getString("role")
-                        ));
+                        if (!resultSet.getString("username").equalsIgnoreCase(usernameLabel.getText())){
+                            userDataList.add(new UserData(
+                                    resultSet.getInt("id"),
+                                    resultSet.getString("username"),
+                                    resultSet.getString("role")
+                            ));
+                        }
+
                     }
 
                 }
@@ -375,9 +412,19 @@ public class AdminUserManagement implements Initializable {
         String userName = database.getValue("SELECT username FROM users WHERE id = " + id).trim();
         String Role = database.getValue("SELECT role FROM users WHERE id = " + id).trim();
         ID = id;
+        String email = database.getValue("SELECT email FROM users WHERE id = " + id).trim();
+        String role = roleLabel.getText();
+
+        if (role.equalsIgnoreCase("Admin")){
+            rolesCombo1.getItems().setAll("Librarian", "Student");
+        }else {
+            rolesCombo1.getItems().setAll("Admin", "Librarian", "Student");
+        }
+
 
         usernameFIeld1.setText(userName);
         rolesCombo1.setValue(Role);
+        emailField1.setText(email);
     }
 
 

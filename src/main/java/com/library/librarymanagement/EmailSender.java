@@ -36,8 +36,9 @@ public class    EmailSender {
         // Generate a random 6-digit verification code
         String verificationCode = generateVerificationCode();
 
+        System.out.println(verificationCode);
         //add the verificationCode to database
-        addVerificationCodeToDatabase(Integer.parseInt(verificationCode),recipientEmail);
+        addVerificationCodeToDatabase(verificationCode,recipientEmail);
 
         // Configure email properties for sending via SMTP
         Properties properties = configureSMTPProperties();
@@ -68,11 +69,11 @@ public class    EmailSender {
         }).start();
     }
 
-    private void addVerificationCodeToDatabase(int code, String email){
+    private void addVerificationCodeToDatabase(String code, String email){
         try(Connection connection = DriverManager.getConnection(DB_URL, USER,PASS);
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO confirmation VALUES(?,?)")){
             preparedStatement.setString(1, email);
-            preparedStatement.setInt(2,code);
+            preparedStatement.setString(2,code);
             preparedStatement.executeUpdate();
 
         }catch (Exception e){

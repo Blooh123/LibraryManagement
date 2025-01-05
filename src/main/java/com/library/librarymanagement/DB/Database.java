@@ -110,11 +110,13 @@ public class Database {
                     "FOREIGN KEY (book_id) REFERENCES books(id)," +
                     "FOREIGN KEY (user_id) REFERENCES users(id)" +
                     ")";
+
             stmt.executeUpdate(borrowRecords);
 
             String confirmation = "CREATE TABLE IF NOT EXISTS confirmation (" +
                     "email VARCHAR(255)," +
-                    "code int(11))";
+                    "code varchar(11))";
+
             stmt.executeUpdate(confirmation);
             conn.close();
             stmt.close();
@@ -287,12 +289,13 @@ public class Database {
             connection.close();
         }
     }
-    public  void addUser(String userName, String password, String role) throws SQLException {
+    public  void addUser(String userName, String password, String role, String email) throws SQLException {
         connectToDB();
-        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users(username, password, role) VALUES(?,SHA1(?),?)",PreparedStatement.RETURN_GENERATED_KEYS)){
+        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users(username, password, role, email) VALUES(?,SHA1(?),?,?)",PreparedStatement.RETURN_GENERATED_KEYS)){
             preparedStatement.setString(1,userName);
             preparedStatement.setString(2,password);
             preparedStatement.setString(3,role);
+            preparedStatement.setString(4,email);
             preparedStatement.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();
@@ -307,13 +310,14 @@ public class Database {
             connection.close();
         }
     }
-    public void updateUser(int id, String userName, String password, String role) throws SQLException{
+    public void updateUser(int id, String userName, String password, String role, String email) throws SQLException{
         connectToDB();
-        try(PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET username = ?, password = SHA1(?), role = ? WHERE id = ?")) {
+        try(PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET username = ?, password = SHA1(?), role = ?, email = ? WHERE id = ?")) {
             preparedStatement.setString(1,userName);
             preparedStatement.setString(2,password);
             preparedStatement.setString(3,role);
-            preparedStatement.setInt(4,id);
+            preparedStatement.setString(4,email);
+            preparedStatement.setInt(5,id);
             preparedStatement.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();
@@ -321,12 +325,13 @@ public class Database {
             connection.close();
         }
     }
-    public void updateUser(int id, String username, String role) throws SQLException {
+    public void updateUser(int id, String username, String role, String email) throws SQLException {
         connectToDB();
-        try(PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET username = ?,role = ? WHERE id = ?")) {
+        try(PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET username = ?,role = ?, email = ? WHERE id = ?")) {
             preparedStatement.setString(1,username);
             preparedStatement.setString(2,role);
-            preparedStatement.setInt(3,id);
+            preparedStatement.setString(3,email);
+            preparedStatement.setInt(4,id);
             preparedStatement.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();
@@ -337,8 +342,25 @@ public class Database {
 
     public boolean checkIfUsernameExists(String username) throws SQLException{
         connectToDB();
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT username FROM users WHERE username = ?")){
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE username = ?")){
             preparedStatement.setString(1, username);
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()){
+                    return true;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            connection.close();
+        }
+        return false;
+    }
+
+    public boolean checkIfEmailExists(String email) throws SQLException {
+        connectToDB();
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE email = ?")){
+            preparedStatement.setString(1, email);
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()){
                     return true;

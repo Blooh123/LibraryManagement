@@ -18,10 +18,7 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class Admin implements Initializable {
     @FXML
@@ -88,9 +85,19 @@ public class Admin implements Initializable {
         stage.show();
     }
     private void setCenteredPane(String fxml) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
         Pane pane = loadedScenes.get(fxml);
+
+
+
         if (pane == null) {  // Load and cache if not already loaded
-            pane = FXMLLoader.load(getClass().getResource(fxml));
+            pane = loader.load();
+            Object controller = loader.getController();
+            String username = usernameLabel.getText();
+            System.out.println(username + "  " + usernameLabel.getText());
+            if (controller instanceof AdminUserManagement){
+                ((AdminUserManagement)controller).setRoleAndUsername(usernameLabel.getText(),roleLabel.getText());
+            }
             loadedScenes.put(fxml, pane);
         }
         borderPane.setCenter(pane);
@@ -98,10 +105,10 @@ public class Admin implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            setCenteredPane("AdminUserManagement.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            setCenteredPane("AdminUserManagement.fxml");
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 }
