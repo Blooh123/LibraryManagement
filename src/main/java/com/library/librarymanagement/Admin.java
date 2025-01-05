@@ -115,8 +115,9 @@ public class Admin implements Initializable {
         EditAdminDetails editAdminDetails = loader.getController();
         String username = usernameLabel.getText();
         String email = database.getValue("SELECT email FROM users WHERE username = '" + username + "'");
+        String id = database.getValue("SELECT id FROM users WHERE username = '"  + username +"'");
 
-        editAdminDetails.setFields(username,email);
+        editAdminDetails.setFields(username,email,id);
 
         Scene scene = new Scene(root);
         Stage newStage = new Stage();

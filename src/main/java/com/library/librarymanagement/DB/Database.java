@@ -325,6 +325,34 @@ public class Database {
             connection.close();
         }
     }
+    public void updateAdmin(int id, String userName, String password, String email) throws SQLException{
+        connectToDB();
+        try(PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET username = ?, password = SHA2(?,256), email = ? WHERE id = ?")) {
+            preparedStatement.setString(1,userName);
+            preparedStatement.setString(2,password);
+            preparedStatement.setString(3,email);
+            preparedStatement.setInt(4,id);
+            preparedStatement.executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            connection.close();
+        }
+    }
+    public void updateAdmin(int id, String userName, String email) throws SQLException{
+        connectToDB();
+        try(PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET username = ?, email = ? WHERE id = ?")) {
+            preparedStatement.setString(1,userName);
+            preparedStatement.setString(2,email);
+            preparedStatement.setInt(3,id);
+            preparedStatement.executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            connection.close();
+        }
+    }
+
     public void updateUser(int id, String username, String role, String email) throws SQLException {
         connectToDB();
         try(PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET username = ?,role = ?, email = ? WHERE id = ?")) {
@@ -373,10 +401,29 @@ public class Database {
         }
         return false;
     }
-    public boolean checkIfActualUser(int id, String username) throws SQLException{
+    public boolean checkIfActualUser(int id, String username, String email) throws SQLException{
         connectToDB();
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT username FROM users WHERE id = ?")){
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE id = ? AND username = ? AND email = ?")){
             preparedStatement.setInt(1, id);
+            preparedStatement.setString(2,username);
+            preparedStatement.setString(3,email);
+            try(ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()){
+                    return true;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            connection.close();
+        }
+        return false;
+    }
+    public boolean checkIfUserActualEmail(int id, String email) throws SQLException {
+        connectToDB();
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM users WHERE id = ? AND email = ?")){
+            preparedStatement.setInt(1, id);
+            preparedStatement.setString(2,email);
             try(ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()){
                     return true;
