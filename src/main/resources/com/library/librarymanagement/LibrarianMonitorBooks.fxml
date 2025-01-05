@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -18,5 +19,10 @@
             <Image url="@../../../Icons/RecentActivitiesIcon.png" />
          </image>
       </ImageView>
+      <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="82.0" layoutY="154.0" prefHeight="784.0" prefWidth="1305.0" style="-fx-background: white; -fx-background-color: white;" vbarPolicy="NEVER">
+         <content>
+            <AnchorPane fx:id="mainContainer" minHeight="0.0" minWidth="0.0" prefHeight="2.0" prefWidth="1305.0" style="-fx-background-color: white;" />
+         </content>
+      </ScrollPane>
    </children>
 </AnchorPane>

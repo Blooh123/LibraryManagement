@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 
 public class AdminUserManagement implements Initializable {
     //DB stuff
@@ -159,10 +161,14 @@ public class AdminUserManagement implements Initializable {
             return;
         }
 
+        //check if email is existing or active
 
 
+        if (!checkIfEmailIsActive(email)){
+            showAlert("Unable to proceed", null, "Email not found!", Alert.AlertType.INFORMATION);
+            return;
+        }
         database.addUser(username,password,role, email);
-
 
         showAlert("Success",null, "Added successfully!", Alert.AlertType.INFORMATION);
         usernameFIeld.clear();
@@ -178,6 +184,36 @@ public class AdminUserManagement implements Initializable {
         clearDataPane();
         loadAllRecords(loadRecordsQuery);
     }
+
+    private boolean checkIfEmailIsActive(String email) {
+        EmailSender sender = new EmailSender();
+        final boolean[] isActive = {false};
+        CountDownLatch latch = new CountDownLatch(1);
+
+        sender.sentWelcomeMessage(email, new EmailCallback() {
+            @Override
+            public void onSuccess() {
+                isActive[0] = true;
+                latch.countDown();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                isActive[0] = false;
+                latch.countDown();
+            }
+        });
+
+        try {
+            latch.await(); // Wait until email sending completes
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return isActive[0];
+    }
+
+
     private int ID;
     private String OriginalUsername;
     private String OriginalEmail;

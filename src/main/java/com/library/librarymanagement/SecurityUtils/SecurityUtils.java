@@ -71,38 +71,50 @@ public class SecurityUtils {
     }
 
     // Decrypt data using AES
-    public String decryptAES(String encryptedData, SecretKey secretKey) {
+    public String decryptAES(String encryptedData, SecretKey key) throws Exception {
         try {
+            // Initialize cipher in DECRYPT_MODE
             Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.DECRYPT_MODE, secretKey);
-            byte[] decodedData = Base64.getDecoder().decode(encryptedData);
-            byte[] originalData = cipher.doFinal(decodedData);
-            return new String(originalData, StandardCharsets.UTF_8);
+            cipher.init(Cipher.DECRYPT_MODE, key);
+
+            // Decode Base64 encrypted data
+            byte[] encryptedBytes = Base64.getDecoder().decode(encryptedData);
+
+            // Decrypt and convert to String
+            byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+            return new String(decryptedBytes, StandardCharsets.UTF_8);
         } catch (Exception e) {
             throw new RuntimeException("Error decrypting data: " + e.getMessage());
         }
     }
+
+
     public String wrapKey(SecretKey dataKey, SecretKey kek) throws Exception {
-        try{ Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.WRAP_MODE, kek);
-            byte[] wrappedKey = cipher.wrap(dataKey);
-            return Base64.getEncoder().encodeToString(wrappedKey);}
-        catch (Exception e){
-            throw new RuntimeException("Error wraping key: " + e.getMessage());
+        try {
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.WRAP_MODE, kek);  // Using KEK to wrap the AES key
+
+            byte[] wrappedKey = cipher.wrap(dataKey);  // Wrap the data key
+            return Base64.getEncoder().encodeToString(wrappedKey);  // Encode it to Base64 for storage
+        } catch (Exception e) {
+            throw new RuntimeException("Error wrapping key: " + e.getMessage());
         }
     }
 
-    // Method to unwrap (decrypt) a key
+
     public SecretKey unwrapKey(String wrappedKey, SecretKey kek) throws Exception {
         try {
             Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.UNWRAP_MODE, kek);
-            byte[] wrappedKeyBytes = Base64.getDecoder().decode(wrappedKey);
-            return (SecretKey) cipher.unwrap(wrappedKeyBytes, "AES", Cipher.SECRET_KEY);
-        }catch (Exception e){
-            throw new RuntimeException("Error unwraping key: " + e.getMessage());
+            cipher.init(Cipher.UNWRAP_MODE, kek);  // Use KEK to unwrap the AES key
+            byte[] wrappedKeyBytes = Base64.getDecoder().decode(wrappedKey);  // Decode wrapped key
+            return (SecretKey) cipher.unwrap(wrappedKeyBytes, "AES", Cipher.SECRET_KEY);  // Unwrap and return SecretKey
+        } catch (Exception e) {
+            throw new RuntimeException("Error unwrapping key: " + e.getMessage());
         }
     }
+
+
+
 
     // Convert SecretKey to String (for storing or sharing)
     public  String keyToString(SecretKey secretKey) {
