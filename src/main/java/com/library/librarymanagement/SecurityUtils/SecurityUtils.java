@@ -69,9 +69,9 @@ public class SecurityUtils {
                 user_id = resultSet.getString("user_id");
                 resultSet.getString("borrow_date");
                 resultSet.getString("due_date");
-                resultSet.getString("retrurn_date");
+                resultSet.getString("return_date");
                 resultSet.getString("fine");
-                unwrappedkey = resultSet.getString("en_key");
+                unwrappedkey = unwrapKey(resultSet.getString("en_key"),generateKEKkey());
 
                 }
              }
