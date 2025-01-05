@@ -1,11 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="1079.0" prefWidth="1456.0" style="-fx-background-color: white;" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.librarymanagement.AdminUserManagement">
+   <children>
+      <TextField fx:id="searchField" layoutX="739.0" layoutY="50.0" prefHeight="62.0" prefWidth="340.0" promptText="Search">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </TextField>
+      <Button fx:id="searchBtn" layoutX="1118.0" layoutY="50.0" mnemonicParsing="false" onAction="#searchAction" prefHeight="70.0" prefWidth="79.0" />
+      <Button fx:id="addBtn" layoutX="1217.0" layoutY="50.0" mnemonicParsing="false" onAction="#addUserAction" prefHeight="70.0" prefWidth="79.0" />
+      <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="72.0" layoutY="220.0" prefHeight="784.0" prefWidth="1305.0" style="-fx-background: white; -fx-background-color: white;" vbarPolicy="NEVER">
+         <content>
+            <AnchorPane fx:id="mainContainer" minHeight="0.0" minWidth="0.0" prefHeight="2.0" prefWidth="1305.0" style="-fx-background-color: white;" />
+         </content>
+      </ScrollPane>
+      <Label layoutX="163.0" layoutY="181.0" text="ID" textFill="#2b5876">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="383.0" layoutY="181.0" text="Username" textFill="#2b5876">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="639.0" layoutY="181.0" text="Role" textFill="#2b5876">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <Button fx:id="refreshBtn" layoutX="1318.0" layoutY="50.0" mnemonicParsing="false" onAction="#refreshPage" prefHeight="70.0" prefWidth="79.0" />
+      <ImageView fitHeight="82.0" fitWidth="109.0" layoutX="63.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../Icons/User.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="178.0" layoutY="53.0" text="Reports" textFill="#2b5876">
 
 <AnchorPane prefHeight="1079.0" prefWidth="1456.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.librarymanagement.AdminReports">
    <children>
@@ -30,14 +73,20 @@
          </font>
       </Label>
       <Label layoutX="565.0" layoutY="127.0" text="Recent Activities" textFill="#2b5876">
+
          <font>
             <Font name="System Bold" size="37.0" />
          </font>
       </Label>
+
+      <Label fx:id="usernameLabel" layoutX="183.0" layoutY="30.0" opacity="0.0" text="Label" />
+      <Label fx:id="roleLabel" layoutX="244.0" layoutY="38.0" opacity="0.0" text="Label" />
+
       <ScrollPane fx:id="scrollPane1" hbarPolicy="NEVER" layoutX="550.0" layoutY="190.0" prefHeight="870.0" prefWidth="892.0" style="-fx-background: white; -fx-background-color: white;" vbarPolicy="NEVER">
          <content>
             <AnchorPane fx:id="mainContainer1" minHeight="0.0" minWidth="0.0" prefHeight="209.0" prefWidth="894.0" style="-fx-background-color: white;" />
          </content>
       </ScrollPane>
+
    </children>
 </AnchorPane>

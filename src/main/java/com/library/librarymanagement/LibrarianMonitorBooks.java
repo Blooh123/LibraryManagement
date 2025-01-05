@@ -4,6 +4,7 @@ import com.library.librarymanagement.DB.Database;
 import com.library.librarymanagement.Enity.BorrowRecord;
 import com.library.librarymanagement.SecurityUtils.SecurityUtils;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -38,6 +39,8 @@ public class LibrarianMonitorBooks implements Initializable {
 
     @FXML
     private ScrollPane scrollPane;
+    @FXML
+    private  Button recieveBorrowedBooksBtn;
     private String query = "SELECT * FROM borrow_records";
 
     private void loadAllRecords(String query) {
@@ -215,6 +218,59 @@ public class LibrarianMonitorBooks implements Initializable {
         mainContainer.getChildren().add(dataPane);
         mainContainer.setPrefHeight((index + 1) * 400); // Adjust container height
     }
+
+    @FXML private void recievedBook(ActionEvent event) {
+
+        System.out.println("Recieved Book");
+    }
+
+
+
+
+    private Button createButton(int ID, String IconPath) {
+        Button button = new Button();
+        button.setStyle(
+                "-fx-background-color: transparent; " +
+                        "-fx-text-fill: #6a89cc; " +
+                        "-fx-background-radius: 8; " +
+                        "-fx-padding: 5 10; " +
+                        "-fx-cursor: hand;"
+        );
+
+        // Load the icon image
+        ImageView iconView = new ImageView();
+        try {
+            Image iconImage = new Image(getClass().getResourceAsStream(IconPath)); // Ensure IconPath is a valid path or URL
+            iconView.setImage(iconImage);
+            iconView.setFitWidth(30); // Set desired width
+            iconView.setFitHeight(30); // Set desired height
+            iconView.setPreserveRatio(true);
+        } catch (Exception e) {
+            System.out.println("Error loading icon image: " + e.getMessage());
+        }
+
+        // Add the icon to the button
+        button.setGraphic(iconView);
+
+        // Add scaling effect when pressed
+        button.setOnMousePressed(event -> {
+            button.setScaleX(0.9); // Slightly reduce button size
+            button.setScaleY(0.9);
+        });
+
+        button.setOnMouseReleased(event -> {
+            button.setScaleX(1.0); // Reset to original size
+            button.setScaleY(1.0);
+        });
+
+        // Add button action (replace with your actual logic)
+        button.setOnAction(event -> {
+            // Your action here
+            System.out.println("Button clicked with ID: " + ID);
+        });
+        return button;
+    }
+
     private AnchorPane createStyledDataPane(int ID) {
         AnchorPane dataPane = new AnchorPane();
         dataPane.setPrefSize(1093, 68); // Set pane size
