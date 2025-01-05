@@ -182,14 +182,19 @@ public class LibrarianMonitorBooks implements Initializable {
         addFineButton.setOnAction(event -> {
             // Handle adding fine logic
             Fine[0] += 5.0; // Add 5 to the fine
-
             // Update the fine label with the new fine value
             fineLabel.setText("Fine: " + String.format("%.2f", Fine[0])); // Use Fine[0] to display the updated fine
-
             // Update the fine in the database
             database.update("UPDATE borrow_records SET fine = " + Fine[0] + " WHERE id = " + id); // Use Fine[0] to update the database
-        });
+            EmailSender emailSender = new EmailSender();
+            try {
+                String email = database.getValue("SELECT email FROM users WHERE id = " + userID);
+                emailSender.notifyStudentAboutFine(email,dueDate,String.valueOf(fine),book);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
 
+        });
 
         // Adjusting layout and adding all components
         VBox contentBox = new VBox(10); // 10px spacing between elements

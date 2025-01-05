@@ -18,9 +18,9 @@
             <Font size="18.0" />
          </font>
       </TextField>
-      <Button fx:id="searchBtn" layoutX="1118.0" layoutY="50.0" mnemonicParsing="false" onAction="#searchAction" prefHeight="70.0" prefWidth="79.0" stylesheets="@Style.css" />
-      <Button fx:id="addBtn" layoutX="1217.0" layoutY="50.0" mnemonicParsing="false" onAction="#addBookAction" prefHeight="70.0" prefWidth="79.0" stylesheets="@Style.css" />
-      <Button fx:id="refreshBtn" layoutX="1318.0" layoutY="50.0" mnemonicParsing="false" onAction="#refreshPage" prefHeight="70.0" prefWidth="79.0" stylesheets="@Style.css" />
+      <Button fx:id="searchBtn" layoutX="1105.0" layoutY="50.0" mnemonicParsing="false" onAction="#searchAction" prefHeight="70.0" prefWidth="79.0" stylesheets="@Style.css" />
+      <Button fx:id="addBtn" layoutX="1191.0" layoutY="50.0" mnemonicParsing="false" onAction="#addBookAction" prefHeight="70.0" prefWidth="79.0" stylesheets="@Style.css" />
+      <Button fx:id="refreshBtn" layoutX="1277.0" layoutY="50.0" mnemonicParsing="false" onAction="#refreshPage" prefHeight="70.0" prefWidth="79.0" stylesheets="@Style.css" />
       <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="82.0" layoutY="230.0" prefHeight="784.0" prefWidth="1305.0" style="-fx-background: white; -fx-background-color: white;" vbarPolicy="NEVER">
          <content>
             <AnchorPane fx:id="mainContainer" minHeight="0.0" minWidth="0.0" prefHeight="2.0" prefWidth="1305.0" style="-fx-background-color: white;" />
