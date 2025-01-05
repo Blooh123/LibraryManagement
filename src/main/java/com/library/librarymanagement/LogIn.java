@@ -108,13 +108,14 @@ public class LogIn implements Initializable {
     }
     @FXML
     private void proceed(ActionEvent event) throws IOException, SQLException {
-
-        if (codeTextField.getText().equals(randomCode.getText())){
-            verificationContainer.setVisible(false);
-            showAlert("Second verification", null, "A 6 digit code has been set to your email.", Alert.AlertType.INFORMATION);
-            String emailForUsers = database.getValue("SELECT email FROM users WHERE username = '" + emailField.getText() + "'");
-            new EmailSender(emailForUsers);
-            verificationContainer1.setVisible(true);
+        if (role.equalsIgnoreCase("Admin") || role.equalsIgnoreCase("Super Admin")){
+            if (codeTextField.getText().equals(randomCode.getText())){
+                verificationContainer.setVisible(false);
+                showAlert("Second verification", null, "A 6 digit code has been set to your email.", Alert.AlertType.INFORMATION);
+                String emailForUsers = database.getValue("SELECT email FROM users WHERE username = '" + emailField.getText() + "'");
+                new EmailSender(emailForUsers);
+                verificationContainer1.setVisible(true);
+            }
         }
 
         if (role.equalsIgnoreCase("Librarian")){
