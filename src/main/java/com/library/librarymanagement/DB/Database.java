@@ -156,6 +156,26 @@ public class Database {
         }
         return list;
     }
+    public Blob getBlobValue(String query) throws SQLException {
+        try (Connection connection = DriverManager.getConnection(DB_URL + DB_NAME, USER, PASS);
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            if (resultSet.next()) {
+                return resultSet.getBlob(1); // Return the first column value
+            }
+        }
+        return null;
+    }
+
+    public void update(String query){
+        connectToDB();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
+            preparedStatement.executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
     public String getValue(String query) throws SQLException {
         connectToDB();
