@@ -34,7 +34,6 @@ public class LibrarianMonitorBooks implements Initializable {
     Database database = new Database();
     ////
 
-    SecurityUtils securityUtils = new SecurityUtils();
     @FXML
     private AnchorPane mainContainer;
 
@@ -119,12 +118,10 @@ public class LibrarianMonitorBooks implements Initializable {
             });
         }).start();
     }
-
     private void clearDataPane() {
         mainContainer.getChildren().clear();
         mainContainer.setPrefHeight(0); // Reset height
     }
-
     private void createDataPane(int id, int userID, int bookID, int quantity, String borrowDate, String returnDate, String dueDate, double fine) throws SQLException {
         AnchorPane dataPane = createStyledDataPane(id);
 
@@ -221,6 +218,7 @@ public class LibrarianMonitorBooks implements Initializable {
         mainContainer.getChildren().add(dataPane);
         mainContainer.setPrefHeight((index + 1) * 400); // Adjust container height
     }
+
     @FXML private void recievedBook(ActionEvent event) {
 
         System.out.println("Recieved Book");
@@ -272,6 +270,7 @@ public class LibrarianMonitorBooks implements Initializable {
         });
         return button;
     }
+
     private AnchorPane createStyledDataPane(int ID) {
         AnchorPane dataPane = new AnchorPane();
         dataPane.setPrefSize(1093, 68); // Set pane size
@@ -304,7 +303,6 @@ public class LibrarianMonitorBooks implements Initializable {
 
         return dataPane;
     }
-
     private Label createStyledLabel(String text, double layoutX, double layoutY, double width) {
         Label label = new Label(text);
         label.setStyle(
@@ -324,8 +322,6 @@ public class LibrarianMonitorBooks implements Initializable {
         label.setPrefWidth(width);
         return label;
     }
-
-
     private void showAlert(String Title, String Header, String Message, Alert.AlertType alertType){
         Alert alert = new Alert(alertType);
         alert.setTitle(Title);
@@ -333,6 +329,57 @@ public class LibrarianMonitorBooks implements Initializable {
         alert.setContentText(Message);
         alert.showAndWait();
     }
+
+
+
+    private Button createButton(int ID, String IconPath) {
+        Button button = new Button();
+        button.setStyle(
+                "-fx-background-color: transparent; " +
+                        "-fx-text-fill: #6a89cc; " +
+                        "-fx-background-radius: 8; " +
+                        "-fx-padding: 5 10; " +
+                        "-fx-cursor: hand;"
+        );
+
+        // Load the icon image
+        ImageView iconView = new ImageView();
+        try {
+            Image iconImage = new Image(getClass().getResourceAsStream(IconPath)); // Ensure IconPath is a valid path or URL
+            iconView.setImage(iconImage);
+            iconView.setFitWidth(30); // Set desired width
+            iconView.setFitHeight(30); // Set desired height
+            iconView.setPreserveRatio(true);
+        } catch (Exception e) {
+            System.out.println("Error loading icon image: " + e.getMessage());
+        }
+
+        // Add the icon to the button
+        button.setGraphic(iconView);
+
+        // Add scaling effect when pressed
+        button.setOnMousePressed(event -> {
+            button.setScaleX(0.9); // Slightly reduce button size
+            button.setScaleY(0.9);
+        });
+
+        button.setOnMouseReleased(event -> {
+            button.setScaleX(1.0); // Reset to original size
+            button.setScaleY(1.0);
+        });
+
+        // Add button action (replace with your actual logic)
+        button.setOnAction(event -> {
+            // Your action here
+            System.out.println("Button clicked with ID: " + ID);
+        });
+        return button;
+    }
+
+
+
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

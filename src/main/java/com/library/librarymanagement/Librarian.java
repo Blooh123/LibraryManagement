@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -34,6 +35,13 @@ public class Librarian implements Initializable {
     private Button logOutBtn,monitorBooks,bookInventoryBtn;
     @FXML
     private AnchorPane menuContainer;
+    @FXML
+    private Label roleLabel,usernameLabel;
+
+    public void setNameRole(String username, String role){
+        usernameLabel.setText(username);
+        roleLabel.setText(role);
+    }
     @FXML
     void bookInventoryAction(ActionEvent event) throws IOException {
         setCenteredPane("AdminBookInventory.fxml");
@@ -74,9 +82,15 @@ public class Librarian implements Initializable {
     }
 
     private void setCenteredPane(String fxml) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
         Pane pane = loadedScenes.get(fxml);
+
         if (pane == null) {  // Load and cache if not already loaded
-            pane = FXMLLoader.load(getClass().getResource(fxml));
+            pane = loader.load();
+            Object controller = loader.getController();
+            if (controller instanceof AdminBookInventory){
+                ((AdminBookInventory)controller).setRoleAndUsername(usernameLabel.getText(),roleLabel.getText());
+            }
             loadedScenes.put(fxml, pane);
         }
         borderPane.setCenter(pane);
@@ -84,10 +98,10 @@ public class Librarian implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        try {
-            setCenteredPane("AdminBookInventory.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            setCenteredPane("AdminBookInventory.fxml");
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 }

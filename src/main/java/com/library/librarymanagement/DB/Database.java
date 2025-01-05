@@ -116,7 +116,16 @@ public class Database {
                     "email VARCHAR(255)," +
                     "code varchar(11))";
 
+            String activityLogs = "CREATE TABLE IF NOT EXISTS activity_logs (" +
+                    "id int(11) PRIMARY KEY AUTO_INCREMENT," +
+                    "user varchar(255)," +
+                    "role varchar(255)," +
+                    "activity varchar(255)" +
+                    ")";
+
+            stmt.executeUpdate(activityLogs);
             stmt.executeUpdate(confirmation);
+
             conn.close();
             stmt.close();
 
@@ -167,7 +176,18 @@ public class Database {
         }
         return null;
     }
-
+    public void addToActivityLog(String user, String role, String activity){
+        connectToDB();
+        String query = "INSERT INTO activity_logs(user, role,activity) VALUES(?,?,?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query,PreparedStatement.RETURN_GENERATED_KEYS)){
+            preparedStatement.setString(1,user);
+            preparedStatement.setString(2,role);
+            preparedStatement.setString(3,activity);
+            preparedStatement.executeUpdate();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
     public void update(String query){
         connectToDB();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)){

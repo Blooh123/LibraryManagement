@@ -128,5 +128,7 @@
             <TextField fx:id="bookStock1" layoutX="834.0" layoutY="269.0" prefHeight="53.0" prefWidth="150.0" promptText="Book stock" />
          </children>
       </AnchorPane>
+      <Label fx:id="usernameLabel" layoutX="355.0" layoutY="30.0" opacity="0.0" text="Label" />
+      <Label fx:id="roleLabel" layoutX="438.0" layoutY="40.0" opacity="0.0" text="Label" />
    </children>
 </AnchorPane>

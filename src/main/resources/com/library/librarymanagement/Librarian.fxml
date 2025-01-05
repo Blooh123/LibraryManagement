@@ -25,7 +25,20 @@
             <Button fx:id="bookInventoryBtn" contentDisplay="RIGHT" layoutX="-21.0" layoutY="450.0" mnemonicParsing="false" onAction="#bookInventoryAction" prefHeight="77.0" prefWidth="375.0" text="Book Inventory" />
             <Button fx:id="monitorBooks" contentDisplay="RIGHT" layoutX="-21.0" layoutY="557.0" mnemonicParsing="false" onAction="#monitorBooksAction" prefHeight="77.0" prefWidth="375.0" text="Monitor Books" />
             <Button fx:id="logOutBtn" contentDisplay="RIGHT" layoutX="-21.0" layoutY="665.0" mnemonicParsing="false" onAction="#logOutAction" prefHeight="77.0" prefWidth="375.0" text="Log out" />
+            <Label fx:id="roleLabel" layoutX="209.0" layoutY="6.0" text="Librarian" />
+            <Label fx:id="usernameLabel" layoutX="345.0" layoutY="24.0" text="username" />
          </children>
       </AnchorPane>
    </left>
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="664.0" fitWidth="732.0" layoutX="388.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../Images/ImageLibrary.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </center>
 </BorderPane>
