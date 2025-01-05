@@ -49,7 +49,7 @@ public class LibrarianMonitorBooks implements Initializable {
     private  Button recieveBorrowedBooksBtn;
     private String query = "SELECT * FROM borrow_records";
 
-    private void loadAllRecords(String query) {
+    public void loadAllRecords(String query) {
         new Thread(() -> {
             boolean check = false;
             List<BorrowRecord> borrowRecords = new ArrayList<>();
@@ -230,6 +230,8 @@ public class LibrarianMonitorBooks implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ReturnBooks.fxml"));
         Parent root = loader.load();
 
+        ReturnBooks returnBooks = loader.getController();
+
         Scene scene = new Scene(root);
         Stage newStage = new Stage();
         newStage.setScene(scene);
@@ -238,6 +240,9 @@ public class LibrarianMonitorBooks implements Initializable {
         newStage.initOwner(currentStage);
         newStage.initModality(Modality.WINDOW_MODAL);
         newStage.setTitle("Secure Library");
+
+        // Pass the current controller to BorrowingBook
+        returnBooks.setParentController(this);
 
         newStage.show();
     }

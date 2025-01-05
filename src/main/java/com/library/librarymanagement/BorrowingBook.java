@@ -129,7 +129,7 @@ public class BorrowingBook {
             showAlert("Success", null, "Book borrowed successfully!", Alert.AlertType.INFORMATION);
 
             if (parentController != null) {
-                parentController.loadAvailableBooks();
+                parentController.loadAvailableBooks("SELECT * FROM books");
             }
 
             // Close the current stage
@@ -150,7 +150,7 @@ public class BorrowingBook {
     private void handleCloseDialog(ActionEvent event) {
         // Call the reloadRecords method in the parent controller
         if (parentController != null) {
-            parentController.loadAvailableBooks();
+            parentController.loadAvailableBooks("SELECT * FROM books");
         }
         Stage currentStage = (Stage) userId.getScene().getWindow();
         currentStage.close();

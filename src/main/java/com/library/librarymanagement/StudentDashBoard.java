@@ -9,16 +9,16 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -27,6 +27,7 @@ import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class StudentDashBoard implements Initializable {
@@ -35,20 +36,64 @@ public class StudentDashBoard implements Initializable {
     private GridPane bookGrid;
     @FXML
     private Label studentID;
+    @FXML
+    private TextField searchField;
+    String query = "SELECT title, author, book_cover, stock FROM books WHERE availability = 1"; // 1 means "Available"
+    @FXML
+    private void search(){
+        String serach = "SELECT * FROM books WHERE (title = '"+searchField.getText()+"' OR author = '"+ searchField.getText()+"' OR genre = '" + searchField.getText() + "') AND availability = 1";
+        loadAvailableBooks(serach);
+    }
+    @FXML
+    private void  reload(){
+        loadAvailableBooks(query);
+    }
+    @FXML
+    private void logOut() throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation to Log out");
+        alert.setContentText("Are you sure you want to log out?");
+        Optional<ButtonType> result = alert.showAndWait();
 
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            backToLogInPage();
+        }
+    }
+    private void backToLogInPage() throws IOException {
+        // Stop the timeline before navigating
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("LogIn.fxml"));
+        Parent root = loader.load();
+        Stage currentStage = (Stage) searchField.getScene().getWindow();
+
+        //  LogInForAdmin logInForAdmin = loader.getController();
+        //  loadingContainer.setVisible(true);
+
+        currentStage.close();
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        LogIn logIn = loader.getController();
+        logIn.setStage(stage);
+        //   logInForAdmin.setStage(stage);
+        stage.setScene(scene);
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/LibraryManagement.png")));
+        scene.setFill(Color.TRANSPARENT);
+        stage.initStyle(StageStyle.TRANSPARENT);
+        stage.show();
+    }
     public void setID(String id){
         studentID.setText(id);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadAvailableBooks();
+        loadAvailableBooks(query);
     }
 
-    public void loadAvailableBooks() {
+    public void loadAvailableBooks(String query) {
 
         bookGrid.getChildren().clear();
-        List<Book> books = getAvailableBooksFromDatabase();
+        List<Book> books = getAvailableBooksFromDatabase(query);
 
         int column = 0;
         int row = 0;
@@ -185,10 +230,10 @@ public class StudentDashBoard implements Initializable {
     }
 
 
-    private List<Book> getAvailableBooksFromDatabase() {
+    private List<Book> getAvailableBooksFromDatabase(String query) {
         List<Book> books = new ArrayList<>();
 
-        String query = "SELECT title, author, book_cover, stock FROM books WHERE availability = 1"; // 1 means "Available"
+
 
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/secureLibrary", "root", "");
              Statement stmt = conn.createStatement();

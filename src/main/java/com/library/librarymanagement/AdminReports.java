@@ -467,6 +467,6 @@ public class AdminReports implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadAllRecords(query);
-        loadAllRecords1("SELECT * FROM activity_logs");
+        loadAllRecords1("SELECT * FROM activity_logs ORDER BY id DESC");
     }
 }

@@ -39,7 +39,16 @@ public class ReturnBooks implements Initializable {
 
 
     private String recordID;
+    private int BookQuan;
+    private String BookID;
+    private String BookTitle;
     private Database database = new Database();
+
+    private LibrarianMonitorBooks parentController;
+
+    public void setParentController(LibrarianMonitorBooks parentController) {
+        this.parentController = parentController;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -47,7 +56,8 @@ public class ReturnBooks implements Initializable {
     }
     @FXML
     void handleCloseDialog(ActionEvent event) {
-
+        Stage currentStage = (Stage) quantityField.getScene().getWindow();
+        currentStage.close();
     }
     @FXML
     void proceed() throws SQLException {
@@ -94,6 +104,10 @@ public class ReturnBooks implements Initializable {
                         System.out.println("Decrypted User ID: " + user_id);
 
                         if (OriginalBookID.equalsIgnoreCase(book_id) && OriginalUserID.equalsIgnoreCase(user_id) && String.valueOf(quantity).equalsIgnoreCase(quantityT)){
+                            recordID = String.valueOf(id);
+                            BookQuan = quantity;
+                            BookID = book_id;
+                            BookTitle = bookTitle;
                             checker = true;
                             showAlert("Record found!", null, "Record found!", Alert.AlertType.INFORMATION);
                             confirmReceived.setDisable(false);
@@ -121,7 +135,28 @@ public class ReturnBooks implements Initializable {
     }
     @FXML
     void handleConfirmReturned(ActionEvent event) {
+        try(Connection connection = DriverManager.getConnection(DB_URL,USER,PASS);
+            PreparedStatement preparedStatement  = connection.prepareStatement("DELETE FROM borrow_records WHERE id = ?");
+            PreparedStatement preparedStatement1 = connection.prepareStatement("UPDATE books SET stock =+ ?, availability = 1 WHERE id = ?")){
+            preparedStatement.setString(1,recordID);
+            preparedStatement.executeUpdate();
 
+
+            preparedStatement1.setInt(1,BookQuan);
+            preparedStatement1.setString(2, BookID);
+            preparedStatement1.executeUpdate();
+            showAlert("Success", null, "Receive successfully", Alert.AlertType.INFORMATION);
+            if (parentController != null) {
+                parentController.loadAllRecords("SELECT * FROM borrow_records");
+            }
+            database.addToActivityLog("","",BookQuan + " copies of " + BookTitle + " returned");
+
+            Stage currentStage = (Stage) bookTitleField.getScene().getWindow();
+            currentStage.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void showAlert(String title, String header, String message, Alert.AlertType alertType) {
