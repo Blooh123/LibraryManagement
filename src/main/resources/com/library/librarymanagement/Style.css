@@ -47,7 +47,9 @@
 
 /* Text Fields */
 #emailField, #passwordField, #searchField, #usernameFIeld, #passwordFieldAdd, #confirmPasswordField,#usernameFIeld1,#passwordFieldAdd1,#confirmPasswordField1,#codeTextField,#codeTextField1,
+ #bookTitleField,#bookAuthorField,#bookGenreField,#bookTitleField1,#bookAuthorField1,#bookGenreField1, #bookStock1,#bookStock,#emailField1, #quantityField{
  #bookTitleField,#bookAuthorField,#bookGenreField,#bookTitleField1,#bookAuthorField1,#bookGenreField1, #bookStock1,#bookStock,#emailField1,#currentPassword{
+
     -fx-border-width: 0px 0px 2px 0px; /* Bottom border only */
     -fx-border-color: linear-gradient(to right, #4e4376, #00c9ff); /* Gradient border */
     -fx-background-color: transparent; /* Transparent background */
@@ -62,11 +64,11 @@
     -fx-cursor: hand;
 }
 
-#emailField:hover, #passwordField:hover,#searchField:hover,#usernameFIeld:hover, #passwordFieldAdd:hover, #confirmPasswordField:hover,#codeTextField:hover {
+#emailField:hover,#quantityField:hover, #passwordField:hover,#searchField:hover,#usernameFIeld:hover, #passwordFieldAdd:hover, #confirmPasswordField:hover,#codeTextField:hover {
     -fx-border-color: linear-gradient(to right, #00c9ff, #4e4376); /* Reverse gradient on hover */
 }
 
-#emailField:focused, #passwordField:focused, #searchField:focused,#usernameFIeld:pressed, #passwordFieldAdd:pressed, #confirmPasswordField:pressed,#codeTextField:pressed {
+#emailField:focused,#quantityField:focused, #passwordField:focused, #searchField:focused,#usernameFIeld:pressed, #passwordFieldAdd:pressed, #confirmPasswordField:pressed,#codeTextField:pressed {
     -fx-border-color: linear-gradient(to right, #76c7c0, #3d546f); /* Secure green-blue for focused state */
 }
 
@@ -163,6 +165,14 @@
     -fx-cursor: hand; /* Change cursor to pointer */
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 2, 2); /* Subtle shadow */
     -fx-background-insets: 0, 0, 1, 2; /* Background layers */
+}
+#borrowDialog {
+    -fx-background-color: #ffffff; /* White background for dialog */
+    -fx-border-color: #000000; /* Black border */
+    -fx-border-width: 2px; /* Border thickness */
+    -fx-border-radius: 5px; /* Rounded corners for the dialog box */
+    -fx-padding: 20px; /* Padding inside the dialog */
+    -fx-background-radius: 5px; /* Rounded corners for background */
 }
 
 #rolesCombo:hover,#rolesCombo1:hover,#availabilityCombo:hover {
