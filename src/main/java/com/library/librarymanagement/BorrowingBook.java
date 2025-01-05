@@ -23,13 +23,16 @@ public class BorrowingBook {
     private TextField quantityField;
     @FXML
     private DatePicker duedate;
+    @FXML
+    private Label userId;
 
 
     private Database database = new Database();
 
-    public void setTitleAndAuthor(String title, String author){
+    public void setTitleAndAuthor(String title, String author, String id){
         bookTitleField.setText(title);
         bookAuthorField.setText(author);
+        userId.setText(id);
     }
 
     @FXML
@@ -39,12 +42,20 @@ public class BorrowingBook {
         String bookAuthor = bookAuthorField.getText();
         String quantity = quantityField.getText();
 
+
+
+
         int currentStock = Integer.parseInt(database.getValue("SELECT stock FROM books WHERE title = '" + bookTitle + "'"));
 
         if (bookTitle.isEmpty() || bookAuthor.isEmpty() || quantity.isEmpty()||duedate.getValue() == null) {
             showAlert("Error", null, "Please fill out all fields.", Alert.AlertType.ERROR);
             return;
         }
+
+
+        String studentID = userId.getText();
+        String bookID = database.getValue("SELECT id FROM books WHERE title = '" + bookTitle + "'");
+
         //String dueDate = duedate.getValue().toString();
         int quantity1 = Integer.parseInt(quantity);
         if (quantity1 > currentStock){
@@ -53,6 +64,7 @@ public class BorrowingBook {
         }
 
         LocalDate currentDate = LocalDate.now();
+
         if (!duedate.getValue().isAfter(currentDate)){
             showAlert("Error", null, "Please choose a date after the current date", Alert.AlertType.INFORMATION);
             return;

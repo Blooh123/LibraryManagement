@@ -150,12 +150,18 @@ public class LogIn implements Initializable {
         Stage currentStage = (Stage) closeIcon.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
         Parent root = fxmlLoader.load();
+
         String id = database.getValue("SELECT id FROM users WHERE username = '" + emailField.getText() + "'");
         String email = database.getValue("SELECT email FROM users WHERE id = " + id);
         String password = database.getValue("SELECT password FROM users WHERE id = " + id);
+
         if (role.equalsIgnoreCase("Super Admin") || role.equalsIgnoreCase("Admin")){
             Admin admin = fxmlLoader.getController();
             admin.setRoleAndUsername(role,emailField.getText(), id,email,password);
+        } else if (role.equalsIgnoreCase("Student")) {
+            String idStudent = database.getValue("SELECT id FROM users WHERE username = '" +emailField.getText() + "'" );
+            StudentDashBoard studentDashBoard = fxmlLoader.getController();
+            studentDashBoard.setID(idStudent);
         }
 
         Scene scene = new Scene(root);

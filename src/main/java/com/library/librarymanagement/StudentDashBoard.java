@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -32,6 +33,12 @@ public class StudentDashBoard implements Initializable {
 
     @FXML
     private GridPane bookGrid;
+    @FXML
+    private Label studentID;
+
+    public void setID(String id){
+        studentID.setText(id);
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -159,7 +166,7 @@ public class StudentDashBoard implements Initializable {
         Parent root = loader.load();
 
         BorrowingBook borrowingBook  = loader.getController();
-        borrowingBook.setTitleAndAuthor(book.getTitle(),book.getAuthor());
+        borrowingBook.setTitleAndAuthor(book.getTitle(),book.getAuthor(),studentID.getText());
 
         Scene scene = new Scene(root);
         Stage newStage = new Stage();

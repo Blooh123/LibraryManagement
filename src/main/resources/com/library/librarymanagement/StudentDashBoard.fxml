@@ -28,6 +28,7 @@
                   <Font size="40.0" />
                </font>
             </Label>
+            <Label fx:id="studentID" layoutX="742.0" layoutY="69.0" opacity="0.0" text="Label" />
          </children>
       </AnchorPane>
    </top>

@@ -41,5 +41,6 @@
             <Image url="@../../../Images/ImageLibrary.png" />
          </image>
       </ImageView>
+      <Label fx:id="userId" layoutX="326.0" layoutY="29.0" opacity="0.0" text="Label" />
     </AnchorPane>
 </AnchorPane>
