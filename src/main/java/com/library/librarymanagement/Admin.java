@@ -1,5 +1,6 @@
 package com.library.librarymanagement;
 
+import com.library.librarymanagement.DB.Database;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,11 +14,13 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.*;
 
 public class Admin implements Initializable {
@@ -101,6 +104,32 @@ public class Admin implements Initializable {
             loadedScenes.put(fxml, pane);
         }
         borderPane.setCenter(pane);
+    }
+    private Database database = new Database();
+    @FXML
+    private void editAdminProfiles() throws IOException, SQLException {
+        Stage currentStage = (Stage) usernameLabel.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("EditAdminDetails.fxml"));
+        Parent root = loader.load();
+
+        EditAdminDetails editAdminDetails = loader.getController();
+        String username = usernameLabel.getText();
+        String email = database.getValue("SELECT email FROM users WHERE username = '" + username + "'");
+        String id = database.getValue("SELECT id FROM users WHERE username = '"  + username +"'");
+
+        editAdminDetails.setFields(username,email,id);
+
+        Scene scene = new Scene(root);
+        Stage newStage = new Stage();
+        newStage.setScene(scene);
+        newStage.setResizable(false);
+        newStage.initOwner(currentStage);
+        newStage.initModality(Modality.WINDOW_MODAL);
+        newStage.setTitle("Edit details");
+        newStage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/LibraryManagement.png")));
+        newStage.show();
+
+
     }
 
     @Override

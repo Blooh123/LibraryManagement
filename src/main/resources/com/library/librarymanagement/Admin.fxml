@@ -22,14 +22,14 @@
                   <Font name="System Bold" size="31.0" />
                </font>
             </Label>
-            <Button fx:id="userManagementBtn" contentDisplay="RIGHT" layoutX="-21.0" layoutY="436.0" mnemonicParsing="false" onAction="#userManagementAction" prefHeight="77.0" prefWidth="375.0" text="User Management">
+            <Button fx:id="userManagementBtn" contentDisplay="RIGHT" layoutX="-21.0" layoutY="469.0" mnemonicParsing="false" onAction="#userManagementAction" prefHeight="77.0" prefWidth="375.0" text="User Management">
                <font>
                   <Font size="24.0" />
                </font>
             </Button>
-            <Button fx:id="bookInventoryBtn" contentDisplay="RIGHT" layoutX="-21.0" layoutY="541.0" mnemonicParsing="false" onAction="#bookInventoryAction" prefHeight="77.0" prefWidth="375.0" text="Book Inventory" />
-            <Button fx:id="reportsBtn" contentDisplay="RIGHT" layoutX="-21.0" layoutY="648.0" mnemonicParsing="false" onAction="#reportsAction" prefHeight="77.0" prefWidth="375.0" text="Reports" />
-            <Button fx:id="logOutBtn" contentDisplay="RIGHT" layoutX="-21.0" layoutY="756.0" mnemonicParsing="false" onAction="#logOutAction" prefHeight="77.0" prefWidth="375.0" text="Log out" />
+            <Button fx:id="bookInventoryBtn" contentDisplay="RIGHT" layoutX="-21.0" layoutY="574.0" mnemonicParsing="false" onAction="#bookInventoryAction" prefHeight="77.0" prefWidth="375.0" text="Book Inventory" />
+            <Button fx:id="reportsBtn" contentDisplay="RIGHT" layoutX="-21.0" layoutY="681.0" mnemonicParsing="false" onAction="#reportsAction" prefHeight="77.0" prefWidth="375.0" text="Reports" />
+            <Button fx:id="logOutBtn" contentDisplay="RIGHT" layoutX="-21.0" layoutY="789.0" mnemonicParsing="false" onAction="#logOutAction" prefHeight="77.0" prefWidth="375.0" text="Log out" />
             <Label fx:id="usernameLabel" layoutX="161.0" layoutY="306.0" prefHeight="46.0" prefWidth="282.0" text="###" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="31.0" />
@@ -40,13 +40,23 @@
                   <Font name="System Bold" size="31.0" />
                </font>
             </Label>
+            <Label fx:id="editProfileLabel" layoutX="12.0" layoutY="409.0" onMouseClicked="#editAdminProfiles" text="Edit profile" textFill="WHITE">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <ImageView fx:id="editIcon" fitHeight="30.0" fitWidth="27.0" layoutX="127.0" layoutY="409.0" onMouseClicked="#editAdminProfiles" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../Icons/EditIcon2.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </left>
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="462.0" fitWidth="806.0" layoutX="531.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="462.0" fitWidth="806.0" layoutX="474.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../Images/ImageLibrary.png" />
                </image>

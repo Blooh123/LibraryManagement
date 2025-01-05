@@ -121,6 +121,7 @@ public class AdminUserManagement implements Initializable {
 
     @FXML
     private void SaveUser(ActionEvent event) throws SQLException {
+
         String username = usernameFIeld.getText();
         String password = new String(passwordFieldAdd.getText());
         String role = rolesCombo.getValue();
@@ -130,14 +131,24 @@ public class AdminUserManagement implements Initializable {
             showAlert("Unable to proceed", null, "Please fill out all the fields!", Alert.AlertType.INFORMATION);
             return;
         }
-        if (role == null){
-            showAlert("Unable to proceed",null, "Please select a role", Alert.AlertType.INFORMATION);
-            return;
+        // Validate the password
+        if (!isValidPassword(password)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Password");
+            alert.setHeaderText("Password does not meet the requirements");
+            alert.setContentText("Password must be 8-16 characters long and contain at least one letter and one number.");
+            alert.showAndWait();
+            return; // Stop further execution if validation fails
         }
         if (!password.equals(confirmPassword)){
             showAlert("Unable to proceed", null, "Password did not match!", Alert.AlertType.INFORMATION);
             return;
         }
+        if (role == null){
+            showAlert("Unable to proceed",null, "Please select a role", Alert.AlertType.INFORMATION);
+            return;
+        }
+
         if (database.checkIfUsernameExists(username)){
             showAlert("Unable to proceed", null, "Username already exists!", Alert.AlertType.INFORMATION);
             return;
@@ -166,9 +177,10 @@ public class AdminUserManagement implements Initializable {
         searchField.setDisable(false);
         clearDataPane();
         loadAllRecords(loadRecordsQuery);
-
     }
     private int ID;
+    private String OriginalUsername;
+    private String OriginalEmail;
     @FXML
     private void saveEditedUser(ActionEvent event) throws SQLException {
         String username = usernameFIeld1.getText();
@@ -180,15 +192,23 @@ public class AdminUserManagement implements Initializable {
             showAlert("Unable to proceed", null, "Please fill out all the fields!", Alert.AlertType.INFORMATION);
             return;
         }
-        if (!password.equals(confirmPassword)){
-            showAlert("Unable to proceed", null, "Password did not match!", Alert.AlertType.INFORMATION);
-            return;
-        }
 
 
-
-        if (database.checkIfActualUser(ID,username)){
+        if (database.checkIfActualUser(ID,username,email)){
             if (!password.isEmpty()){
+                if (!isValidPassword(password)) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Invalid Password");
+                    alert.setHeaderText("Password does not meet the requirements");
+                    alert.setContentText("Password must be 8-16 characters long and contain at least one letter and one number.");
+                    alert.showAndWait();
+                    return; // Stop further execution if validation fails
+                }
+
+                if (!password.equals(confirmPassword)){
+                    showAlert("Unable to proceed", null, "Password did not match!", Alert.AlertType.INFORMATION);
+                    return;
+                }
                 database.updateUser(ID,username,password,role,email);
                 showAlert("Success",null, "Saved successfully!", Alert.AlertType.INFORMATION);
                 usernameFIeld1.clear();
@@ -220,17 +240,26 @@ public class AdminUserManagement implements Initializable {
                 return;
             }
         }
+        if (!username.equalsIgnoreCase(OriginalUsername)){
+            if (database.checkIfUsernameExists(username)){
+                showAlert("Unable to proceed", null, "Username already exists!", Alert.AlertType.INFORMATION);
+                return;
+            }
+        }
+        if (!email.equalsIgnoreCase(OriginalEmail)){
+            if (database.checkIfEmailExists(email)){
+                showAlert("Unable to proceed", null, "Email already exists!", Alert.AlertType.INFORMATION);
+                return;
+            }
+        }
 
-        if (database.checkIfUsernameExists(username)){
-            showAlert("Unable to proceed", null, "Username already exists!", Alert.AlertType.INFORMATION);
+
+        if (password.isEmpty() || password.isBlank()){
+            database.updateUser(ID,username,role, email);
+            showAlert("Success",null, "Saved successfully!", Alert.AlertType.INFORMATION);
+            animatePane(editUserPane,0,-900,400);
             return;
         }
-        if (database.checkIfEmailExists(email)){
-            showAlert("Unable to proceed", null, "Email already exists!", Alert.AlertType.INFORMATION);
-            return;
-        }
-
-
         database.updateUser(ID,username,password,role, email);
         showAlert("Success",null, "Saved successfully!", Alert.AlertType.INFORMATION);
         usernameFIeld1.clear();
@@ -245,6 +274,17 @@ public class AdminUserManagement implements Initializable {
         searchField.setDisable(false);
         clearDataPane();
         loadAllRecords(loadRecordsQuery);
+    }
+
+    /**
+     * Validates the password based on the required criteria.
+     *
+     * @param password The password to validate.
+     * @return true if the password meets the criteria, false otherwise.
+     */
+    private boolean isValidPassword(String password) {
+        String passwordPattern = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,16}$";
+        return password.matches(passwordPattern);
     }
     @FXML
     private void searchAction(ActionEvent event){
@@ -414,6 +454,9 @@ public class AdminUserManagement implements Initializable {
         ID = id;
         String email = database.getValue("SELECT email FROM users WHERE id = " + id).trim();
         String role = roleLabel.getText();
+
+        OriginalUsername = userName;
+        OriginalEmail = email;
 
         if (role.equalsIgnoreCase("Admin")){
             rolesCombo1.getItems().setAll("Librarian", "Student");
