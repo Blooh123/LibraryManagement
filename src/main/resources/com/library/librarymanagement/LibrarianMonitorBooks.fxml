@@ -19,9 +19,9 @@
             <Image url="@../../../Icons/RecentActivitiesIcon.png" />
          </image>
       </ImageView>
-      <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="82.0" layoutY="154.0" prefHeight="784.0" prefWidth="1305.0" style="-fx-background: white; -fx-background-color: white;" vbarPolicy="NEVER">
+      <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" layoutX="82.0" layoutY="154.0" prefHeight="883.0" prefWidth="1305.0" style="-fx-background: white; -fx-background-color: white;" vbarPolicy="NEVER">
          <content>
-            <AnchorPane fx:id="mainContainer" minHeight="0.0" minWidth="0.0" prefHeight="2.0" prefWidth="1305.0" style="-fx-background-color: white;" />
+            <AnchorPane fx:id="mainContainer" minHeight="0.0" minWidth="0.0" prefHeight="753.0" prefWidth="1305.0" style="-fx-background-color: white;" />
          </content>
       </ScrollPane>
    </children>

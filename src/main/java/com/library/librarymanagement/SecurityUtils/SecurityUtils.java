@@ -1,129 +1,134 @@
 package com.library.librarymanagement.SecurityUtils;
 
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
+import java.security.Key;
 import java.security.NoSuchAlgorithmException;
+import java.security.spec.KeySpec;
 import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class SecurityUtils {
-    public String book_id;
-    public String user_id;
-    // Generate AES Secret Key
-    public String unwrappedkey;
-    public SecretKey generateAESKey() {
+
+    private String bookId;
+    private String userId;
+    private String unwrappedKey;
+
+    // Generate a Key Encryption Key (KEK)
+    public static SecretKey generateKEKKey() {
         try {
             KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-            keyGen.init(128); // 128-bit AES
+            keyGen.init(256); // 256-bit AES
             return keyGen.generateKey();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Error generating KEK: " + e.getMessage());
+        }
+    }
+
+    // Wrap the AES key using a KEK
+    public static String wrapKey(SecretKey aesKey, SecretKey kek) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding"); // Ensure consistent mode
+        cipher.init(Cipher.WRAP_MODE, kek);
+        byte[] wrappedKey = cipher.wrap(aesKey);
+        return Base64.getEncoder().encodeToString(wrappedKey);
+    }
+
+    public static SecretKey unwrapKey(String wrappedKeyBase64, SecretKey kek) throws Exception {
+        byte[] wrappedKey = Base64.getDecoder().decode(wrappedKeyBase64);
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding"); // Ensure consistent mode
+        cipher.init(Cipher.UNWRAP_MODE, kek);
+        return (SecretKey) cipher.unwrap(wrappedKey, "AES", Cipher.SECRET_KEY);
+    }
+
+    public static SecretKey deriveKEK(String password, byte[] salt) throws Exception {
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 256);
+        SecretKey tmp = factory.generateSecret(spec);
+        return new SecretKeySpec(tmp.getEncoded(), "AES");
+    }
+
+
+
+    // Generate a new AES key
+    public static SecretKey generateAESKey() {
+        try {
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+            keyGenerator.init(256); // or 128 depending on the key size
+            return keyGenerator.generateKey();
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Error generating AES key: " + e.getMessage());
         }
     }
-    public SecretKey generateKEKKey() {
-        try {
-            KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-            keyGen.init(256); // 128-bit AES
-            return keyGen.generateKey();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error generating AES key: " + e.getMessage());
-        }
-    }
-    /*
 
-
-            String retrieve = "SELECT  `book_id`, `user_id`, `borrow_date`, `due_date`, `return_date`, `fine`, `en_key` FROM `borrow_records`";
-            try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement preparedStatement = connection.prepareStatement(retrieve)) {
-
-             ResultSet resultSet = preparedStatement.executeQuery();
-                if (resultSet.next()) {
-
-                book_id = decryptAES(resultSet.getString("book_id"),unwrappedkey),;
-                user_id = decryptAES(resultSet.getString("user_id"),unwrappedkey);
-                borrowdate = resultSet.getString("borrow_date");
-                duedate = resultSet.getString("due_date");
-                returndate = resultSet.getString("return_date");
-                fine = resultSet.getString("fine");
-                unwrappedkey = unwrapKey(resultSet.getString("en_key"),generateKEKkey());
-
-                }
-             }
-             catch(Exception e){
-            throw new RuntimeException("Error retrieving data: " + e.getMessage());
-            }
-     */
-
-
-    // Encrypt data using AES
-    public String encryptAES(String data, SecretKey secretKey) {
-        try {
-            Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            byte[] encryptedData = cipher.doFinal(data.getBytes(StandardCharsets.UTF_8));
-            return Base64.getEncoder().encodeToString(encryptedData);
-        } catch (Exception e) {
-            throw new RuntimeException("Error encrypting data: " + e.getMessage());
-        }
+    // Encrypt data with AES
+    public static String encryptAES(String data, SecretKey aesKey) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.ENCRYPT_MODE, aesKey);
+        byte[] encryptedData = cipher.doFinal(data.getBytes(StandardCharsets.UTF_8));
+        return Base64.getEncoder().encodeToString(encryptedData);
     }
 
-    // Decrypt data using AES
-    public String decryptAES(String encryptedData, SecretKey key) throws Exception {
-        try {
-            // Initialize cipher in DECRYPT_MODE
-            Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.DECRYPT_MODE, key);
-
-            // Decode Base64 encrypted data
-            byte[] encryptedBytes = Base64.getDecoder().decode(encryptedData);
-
-            // Decrypt and convert to String
-            byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
-            return new String(decryptedBytes, StandardCharsets.UTF_8);
-        } catch (Exception e) {
-            throw new RuntimeException("Error decrypting data: " + e.getMessage());
-        }
+    // Decrypt data with AES
+    public static String decryptAES(String encryptedDataBase64, SecretKey aesKey) throws Exception {
+        byte[] encryptedData = Base64.getDecoder().decode(encryptedDataBase64);
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.DECRYPT_MODE, aesKey);
+        byte[] decryptedData = cipher.doFinal(encryptedData);
+        return new String(decryptedData, StandardCharsets.UTF_8);
     }
 
-
-    public String wrapKey(SecretKey dataKey, SecretKey kek) throws Exception {
-        try {
-            Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.WRAP_MODE, kek);  // Using KEK to wrap the AES key
-
-            byte[] wrappedKey = cipher.wrap(dataKey);  // Wrap the data key
-            return Base64.getEncoder().encodeToString(wrappedKey);  // Encode it to Base64 for storage
-        } catch (Exception e) {
-            throw new RuntimeException("Error wrapping key: " + e.getMessage());
-        }
-    }
-
-
-    public SecretKey unwrapKey(String wrappedKey, SecretKey kek) throws Exception {
-        try {
-            Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.UNWRAP_MODE, kek);  // Use KEK to unwrap the AES key
-            byte[] wrappedKeyBytes = Base64.getDecoder().decode(wrappedKey);  // Decode wrapped key
-            return (SecretKey) cipher.unwrap(wrappedKeyBytes, "AES", Cipher.SECRET_KEY);  // Unwrap and return SecretKey
-        } catch (Exception e) {
-            throw new RuntimeException("Error unwrapping key: " + e.getMessage());
-        }
-    }
-
-
-
-
-    // Convert SecretKey to String (for storing or sharing)
-    public  String keyToString(SecretKey secretKey) {
+    // Convert SecretKey to String
+    public static String keyToString(SecretKey secretKey) {
         return Base64.getEncoder().encodeToString(secretKey.getEncoded());
     }
 
     // Convert String back to SecretKey
     public SecretKey stringToKey(String keyString) {
         byte[] decodedKey = Base64.getDecoder().decode(keyString);
-        return new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+        return new SecretKeySpec(decodedKey, "AES");
+    }
+
+    // Example method for retrieving data and decrypting it
+    public void retrieveData(String encryptedBookId, String encryptedUserId, String wrappedKeyBase64, SecretKey kek) {
+        try {
+            // Unwrap the AES key using the KEK
+            SecretKey aesKey = unwrapKey(wrappedKeyBase64, kek);
+
+            // Decrypt the bookId and userId
+            this.bookId = decryptAES(encryptedBookId, aesKey);
+            this.userId = decryptAES(encryptedUserId, aesKey);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Error retrieving and decrypting data: " + e.getMessage());
+        }
+    }
+
+    // Getters and Setters for bookId and userId
+    public String getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUnwrappedKey() {
+        return unwrappedKey;
+    }
+
+    public void setUnwrappedKey(String unwrappedKey) {
+        this.unwrappedKey = unwrappedKey;
     }
 }
