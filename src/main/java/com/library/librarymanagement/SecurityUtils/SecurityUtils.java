@@ -10,11 +10,11 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 public class SecurityUtils {
-    public static String book_id;
-    public static String user_id;
+    public String book_id;
+    public String user_id;
     // Generate AES Secret Key
-    public static String unwrappedkey;
-    public static SecretKey generateAESKey() {
+    public String unwrappedkey;
+    public SecretKey generateAESKey() {
         try {
             KeyGenerator keyGen = KeyGenerator.getInstance("AES");
             keyGen.init(128); // 128-bit AES
@@ -23,7 +23,7 @@ public class SecurityUtils {
             throw new RuntimeException("Error generating AES key: " + e.getMessage());
         }
     }
-    public static SecretKey generateKEKKey() {
+    public SecretKey generateKEKKey() {
         try {
             KeyGenerator keyGen = KeyGenerator.getInstance("AES");
             keyGen.init(256); // 128-bit AES
@@ -82,7 +82,7 @@ public class SecurityUtils {
 
 
     // Encrypt data using AES
-    public static String encryptAES(String data, SecretKey secretKey) {
+    public String encryptAES(String data, SecretKey secretKey) {
         try {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
@@ -94,7 +94,7 @@ public class SecurityUtils {
     }
 
     // Decrypt data using AES
-    public static String decryptAES(String encryptedData, SecretKey secretKey) {
+    public String decryptAES(String encryptedData, SecretKey secretKey) {
         try {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
@@ -105,7 +105,7 @@ public class SecurityUtils {
             throw new RuntimeException("Error decrypting data: " + e.getMessage());
         }
     }
-    public static String wrapKey(SecretKey dataKey, SecretKey kek) throws Exception {
+    public String wrapKey(SecretKey dataKey, SecretKey kek) throws Exception {
         try{ Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.WRAP_MODE, kek);
             byte[] wrappedKey = cipher.wrap(dataKey);
@@ -116,7 +116,7 @@ public class SecurityUtils {
     }
 
     // Method to unwrap (decrypt) a key
-    public static SecretKey unwrapKey(String wrappedKey, SecretKey kek) throws Exception {
+    public SecretKey unwrapKey(String wrappedKey, SecretKey kek) throws Exception {
         try {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.UNWRAP_MODE, kek);
@@ -128,12 +128,12 @@ public class SecurityUtils {
     }
 
     // Convert SecretKey to String (for storing or sharing)
-    public static String keyToString(SecretKey secretKey) {
+    public  String keyToString(SecretKey secretKey) {
         return Base64.getEncoder().encodeToString(secretKey.getEncoded());
     }
 
     // Convert String back to SecretKey
-    public static SecretKey stringToKey(String keyString) {
+    public SecretKey stringToKey(String keyString) {
         byte[] decodedKey = Base64.getDecoder().decode(keyString);
         return new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
     }

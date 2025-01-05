@@ -100,15 +100,13 @@ public class Database {
             // Borrow Records table
             String borrowRecords = "CREATE TABLE IF NOT EXISTS borrow_records (" +
                     "id INT AUTO_INCREMENT PRIMARY KEY," +
-                    "book_id INT NOT NULL," +
-                    "user_id INT NOT NULL," +
+                    "book_id varchar (255)," +
+                    "user_id varchar (255)," +
                     "borrow_date DATE NOT NULL," +
                     "due_date DATE NOT NULL," +
                     "return_date DATE," +
                     "fine DECIMAL(10, 2) DEFAULT 0," +
-                    "en_key varchar(255)," +
-                    "FOREIGN KEY (book_id) REFERENCES books(id)," +
-                    "FOREIGN KEY (user_id) REFERENCES users(id)" +
+                    "en_key varchar(255)" +
                     ")";
 
             stmt.executeUpdate(borrowRecords);
