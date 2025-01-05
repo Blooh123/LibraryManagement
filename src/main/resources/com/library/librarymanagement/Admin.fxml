@@ -40,12 +40,12 @@
                   <Font name="System Bold" size="31.0" />
                </font>
             </Label>
-            <Label fx:id="roleLabel1" layoutX="12.0" layoutY="409.0" onMouseClicked="#editAdminProfiles" text="Edit profile" textFill="WHITE">
+            <Label fx:id="editProfileLabel" layoutX="12.0" layoutY="409.0" onMouseClicked="#editAdminProfiles" text="Edit profile" textFill="WHITE">
                <font>
                   <Font size="23.0" />
                </font>
             </Label>
-            <ImageView fitHeight="30.0" fitWidth="27.0" layoutX="127.0" layoutY="409.0" onMouseClicked="#editAdminProfiles" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="editIcon" fitHeight="30.0" fitWidth="27.0" layoutX="127.0" layoutY="409.0" onMouseClicked="#editAdminProfiles" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../Icons/EditIcon2.png" />
                </image>

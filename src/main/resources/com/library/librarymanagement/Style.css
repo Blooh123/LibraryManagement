@@ -47,7 +47,7 @@
 
 /* Text Fields */
 #emailField, #passwordField, #searchField, #usernameFIeld, #passwordFieldAdd, #confirmPasswordField,#usernameFIeld1,#passwordFieldAdd1,#confirmPasswordField1,#codeTextField,#codeTextField1,
- #bookTitleField,#bookAuthorField,#bookGenreField,#bookTitleField1,#bookAuthorField1,#bookGenreField1, #bookStock1,#bookStock,#emailField1{
+ #bookTitleField,#bookAuthorField,#bookGenreField,#bookTitleField1,#bookAuthorField1,#bookGenreField1, #bookStock1,#bookStock,#emailField1,#currentPassword{
     -fx-border-width: 0px 0px 2px 0px; /* Bottom border only */
     -fx-border-color: linear-gradient(to right, #4e4376, #00c9ff); /* Gradient border */
     -fx-background-color: transparent; /* Transparent background */
@@ -57,6 +57,9 @@
     -fx-text-fill: #000000; /* White text for visibility */
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
+}
+#editProfileLabel,#editIcon{
+    -fx-cursor: hand;
 }
 
 #emailField:hover, #passwordField:hover,#searchField:hover,#usernameFIeld:hover, #passwordFieldAdd:hover, #confirmPasswordField:hover,#codeTextField:hover {

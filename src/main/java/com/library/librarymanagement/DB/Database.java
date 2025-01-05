@@ -23,7 +23,7 @@ public class Database {
     }
     public void addDefaultAdmin(){
         connectToDB();
-        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users(username, password, role,email) VALUES('AdminDef', SHA1('12345'), 'Super Admin', 'davetiongson30@gmail.com')", PreparedStatement.RETURN_GENERATED_KEYS)){
+        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users(username, password, role,email) VALUES('AdminDef', SHA2('12345', 256), 'Super Admin', 'ddtiongson00006@usep.edu.ph')", PreparedStatement.RETURN_GENERATED_KEYS)){
             preparedStatement.executeUpdate();
         }catch (Exception e){
             e.printStackTrace();
@@ -291,7 +291,7 @@ public class Database {
     }
     public  void addUser(String userName, String password, String role, String email) throws SQLException {
         connectToDB();
-        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users(username, password, role, email) VALUES(?,SHA1(?),?,?)",PreparedStatement.RETURN_GENERATED_KEYS)){
+        try (PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users(username, password, role, email) VALUES(?,SHA2(?,256),?,?)",PreparedStatement.RETURN_GENERATED_KEYS)){
             preparedStatement.setString(1,userName);
             preparedStatement.setString(2,password);
             preparedStatement.setString(3,role);
@@ -312,7 +312,7 @@ public class Database {
     }
     public void updateUser(int id, String userName, String password, String role, String email) throws SQLException{
         connectToDB();
-        try(PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET username = ?, password = SHA1(?), role = ?, email = ? WHERE id = ?")) {
+        try(PreparedStatement preparedStatement = connection.prepareStatement("UPDATE users SET username = ?, password = SHA2(?,256), role = ?, email = ? WHERE id = ?")) {
             preparedStatement.setString(1,userName);
             preparedStatement.setString(2,password);
             preparedStatement.setString(3,role);

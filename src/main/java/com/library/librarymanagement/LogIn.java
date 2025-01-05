@@ -72,7 +72,7 @@ public class LogIn implements Initializable {
         }
         //System.out.println("Bilat");
         try (Connection connection = DriverManager.getConnection(DB_URL,USER,PASS);
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT role FROM users WHERE (username = ? AND password = SHA1(?))")){
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT role FROM users WHERE (username = ? AND password = SHA2(?,256))")){
 
             preparedStatement.setString(1, userName);
             preparedStatement.setString(2,password);
