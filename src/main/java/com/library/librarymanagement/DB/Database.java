@@ -103,6 +103,7 @@ public class Database {
                     "book_id varchar (255)," +
                     "user_id varchar (255)," +
                     "borrow_date DATE NOT NULL," +
+                    "quantity int(11)," +
                     "due_date DATE NOT NULL," +
                     "return_date DATE," +
                     "fine DECIMAL(10, 2) DEFAULT 0," +

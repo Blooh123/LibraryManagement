@@ -45,7 +45,8 @@ public class StudentDashBoard implements Initializable {
         loadAvailableBooks();
     }
 
-    private void loadAvailableBooks() {
+    public void loadAvailableBooks() {
+
         bookGrid.getChildren().clear();
         List<Book> books = getAvailableBooksFromDatabase();
 
@@ -176,6 +177,10 @@ public class StudentDashBoard implements Initializable {
         newStage.initOwner(currentStage);
         newStage.initModality(Modality.WINDOW_MODAL);
         newStage.setTitle("Secure Library");
+
+        // Pass the current controller to BorrowingBook
+        borrowingBook.setParentController(this);
+
         newStage.show();
     }
 

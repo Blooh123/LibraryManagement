@@ -38,6 +38,13 @@ public class BorrowingBook {
         userId.setText(id);
     }
 
+    private StudentDashBoard parentController;
+
+    public void setParentController(StudentDashBoard parentController) {
+        this.parentController = parentController;
+    }
+
+
     @FXML
     private void handleConfirmBorrow(ActionEvent event) throws SQLException {
 
@@ -76,7 +83,7 @@ public class BorrowingBook {
 
 
         String queryForUpdateBook = "UPDATE books " +
-                "SET stock = stock - 1, " +
+                "SET stock = stock - " + quantity1 + ", " +
                 "availability = CASE WHEN stock = 0 THEN 0 ELSE availability END " +  // Only update availability when stock hits 0
                 "WHERE title = ? AND stock > 0";
 
@@ -90,8 +97,8 @@ public class BorrowingBook {
             showAlert("Error", null, "An error occurred while borrowing the book.", Alert.AlertType.ERROR);
         }
 
-        String queryForInsertBorrow = "INSERT INTO `borrow_records`(`book_id`, `user_id`, `borrow_date`, `due_date`, `en_key`) " +
-                "VALUES (?, ?, ?, ?, ?)";
+        String queryForInsertBorrow = "INSERT INTO `borrow_records`(`book_id`, `user_id`, `borrow_date`, `quantity`, `due_date`, `en_key`) " +
+                "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/secureLibrary", "root", "");
              PreparedStatement preparedStatement = connection.prepareStatement(queryForInsertBorrow, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -104,10 +111,20 @@ public class BorrowingBook {
             preparedStatement.setString(1, securityUtils.encryptAES(bookID, aesKey)); // Encrypt book ID
             preparedStatement.setString(2, securityUtils.encryptAES(studentID, aesKey)); // Encrypt student ID
             preparedStatement.setString(3, currentDate.toString()); // Set current date
-            preparedStatement.setString(4, duedate.getValue().toString()); // Set due date
-            preparedStatement.setString(5, wrappedKey); // Set wrapped AES key
+            preparedStatement.setInt(4, quantity1);
+            preparedStatement.setString(5, duedate.getValue().toString()); // Set due date
+            preparedStatement.setString(6, wrappedKey); // Set wrapped AES key
 
             preparedStatement.executeUpdate();
+            showAlert("Success", null,"Borrowed Successfully!", Alert.AlertType.INFORMATION);
+
+            if (parentController != null) {
+                parentController.loadAvailableBooks();
+            }
+
+            Stage currentStage = (Stage) userId.getScene().getWindow();
+            currentStage.close();
+
             System.out.println("BORROWED SUCCESSFULLY");
         } catch (Exception e) {
             throw new RuntimeException("Error inserting data: " + e.getMessage());
@@ -119,8 +136,14 @@ public class BorrowingBook {
     // This method is called when the "Cancel" button is clicked
     @FXML
     private void handleCloseDialog(ActionEvent event) {
-        Stage currentStage = (Stage) bookTitleField.getScene().getWindow();
+        // Call the reloadRecords method in the parent controller
+        if (parentController != null) {
+            parentController.loadAvailableBooks();
+        }
+        Stage currentStage = (Stage) userId.getScene().getWindow();
         currentStage.close();
+
+
     }
 
     // Utility method to show alerts
