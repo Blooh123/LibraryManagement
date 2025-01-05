@@ -162,6 +162,9 @@ public class LogIn implements Initializable {
             String idStudent = database.getValue("SELECT id FROM users WHERE username = '" +emailField.getText() + "'" );
             StudentDashBoard studentDashBoard = fxmlLoader.getController();
             studentDashBoard.setID(idStudent);
+        }else if (role.equalsIgnoreCase("Librarian")){
+            Librarian librarian = fxmlLoader.getController();
+            librarian.setNameRole(emailField.getText(),role);
         }
 
         Scene scene = new Scene(root);

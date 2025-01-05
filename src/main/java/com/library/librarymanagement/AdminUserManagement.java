@@ -169,7 +169,7 @@ public class AdminUserManagement implements Initializable {
             return;
         }
         database.addUser(username,password,role, email);
-
+        database.addToActivityLog(usernameLabel.getText(),roleLabel.getText(),"Added a new user: " +username + " - Role: " +  role);
         showAlert("Success",null, "Added successfully!", Alert.AlertType.INFORMATION);
         usernameFIeld.clear();
         passwordFieldAdd.clear();
@@ -246,6 +246,7 @@ public class AdminUserManagement implements Initializable {
                     return;
                 }
                 database.updateUser(ID,username,password,role,email);
+                database.addToActivityLog(usernameLabel.getText(),roleLabel.getText(),"Update a user: " + OriginalUsername + " New details has been change! (Username,Password,Role, Email)");
                 showAlert("Success",null, "Saved successfully!", Alert.AlertType.INFORMATION);
                 usernameFIeld1.clear();
                 passwordFieldAdd1.clear();
@@ -261,6 +262,7 @@ public class AdminUserManagement implements Initializable {
                 return;
             }else {
                 database.updateUser(ID,username,role,email);
+                database.addToActivityLog(usernameLabel.getText(),roleLabel.getText(),"Update a user: " + OriginalUsername + " New details has been change! (Username,Role, Email)");
                 showAlert("Success",null, "Saved successfully!", Alert.AlertType.INFORMATION);
                 usernameFIeld1.clear();
                 passwordFieldAdd1.clear();
@@ -297,6 +299,7 @@ public class AdminUserManagement implements Initializable {
             return;
         }
         database.updateUser(ID,username,password,role, email);
+        database.addToActivityLog(usernameLabel.getText(),roleLabel.getText(),"Update a user: " + OriginalUsername + " New details has been change! (Username,Password,Role, Email)");
         showAlert("Success",null, "Saved successfully!", Alert.AlertType.INFORMATION);
         usernameFIeld1.clear();
         passwordFieldAdd1.clear();

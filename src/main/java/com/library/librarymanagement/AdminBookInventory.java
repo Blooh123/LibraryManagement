@@ -56,6 +56,20 @@ public class AdminBookInventory implements Initializable {
     private TextField searchField,bookTitleField,bookAuthorField,bookGenreField,bookTitleField1,bookAuthorField1,bookGenreField1,bookStock1,bookStock;
     @FXML
     private AnchorPane mainContainer;
+    @FXML
+    private Label usernameLabel,roleLabel;
+
+    private String userName;
+    private String userRole;
+
+
+    public void setRoleAndUsername(String username, String userRole){
+        System.out.println(username + " book management");
+        this.userName = username;
+        this.userRole = userRole;
+        usernameLabel.setText(username);
+        roleLabel.setText(userRole);
+    }
 
     @FXML
     void addBookAction(ActionEvent event) {
@@ -117,7 +131,7 @@ public class AdminBookInventory implements Initializable {
 
             // Add book to the database
             database.addBook(bookTitleField.getText(), bookAuthorField.getText(), bookGenreField.getText(), isAvailable, bookCover,Integer.parseInt(bookStock.getText()));
-
+            database.addToActivityLog(usernameLabel.getText(),roleLabel.getText(),usernameLabel.getText() + " added a new book: " + bookTitleField.getText());
             // Show success message and reset fields
             showAlert("Success", null, "New book added successfully!", Alert.AlertType.INFORMATION);
             resetAddBookForm();
@@ -146,7 +160,7 @@ public class AdminBookInventory implements Initializable {
 
                 // Update book in the database
                 database.updateBook(bookID, bookTitleField1.getText(), bookAuthorField1.getText(), bookGenreField1.getText(), isAvailable, bookCover,Integer.parseInt(bookStock1.getText()));
-
+                database.addToActivityLog(usernameLabel.getText(),roleLabel.getText(),usernameLabel.getText() + " updated a book");
                 // Show success message and reset fields
                 showAlert("Success", null, "Book updated successfully!", Alert.AlertType.INFORMATION);
                 resetEditBookForm();
@@ -364,7 +378,7 @@ public class AdminBookInventory implements Initializable {
         deleteButton.setLayoutX(1000);
 
         deleteButton.setOnAction(event -> {
-            deleteAction(id);
+            deleteAction(id,title);
         });
 
         editButton.setOnAction(event -> {
@@ -438,7 +452,7 @@ public class AdminBookInventory implements Initializable {
 
     }
 
-    private void deleteAction(int id){
+    private void deleteAction(int id, String title){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation to Delete");
         alert.setContentText("Are you sure you want to delete?");
@@ -446,6 +460,7 @@ public class AdminBookInventory implements Initializable {
 
         if (result.isPresent() && result.get() == ButtonType.OK) {
             database.deleteBook(id);
+            database.addToActivityLog(usernameLabel.getText(),roleLabel.getText(),usernameLabel.getText() + " Deleted a book: " + title);
             showAlert("Success", null, "Deleted successfully!", Alert.AlertType.INFORMATION);
             loadAllRecords(selectQuery);
         }

@@ -33,7 +33,6 @@ public class LibrarianMonitorBooks implements Initializable {
     Database database = new Database();
     ////
 
-    SecurityUtils securityUtils = new SecurityUtils();
     @FXML
     private AnchorPane mainContainer;
 
@@ -116,12 +115,10 @@ public class LibrarianMonitorBooks implements Initializable {
             });
         }).start();
     }
-
     private void clearDataPane() {
         mainContainer.getChildren().clear();
         mainContainer.setPrefHeight(0); // Reset height
     }
-
     private void createDataPane(int id, int userID, int bookID, int quantity, String borrowDate, String returnDate, String dueDate, double fine) throws SQLException {
         AnchorPane dataPane = createStyledDataPane(id);
 
@@ -218,8 +215,64 @@ public class LibrarianMonitorBooks implements Initializable {
         mainContainer.getChildren().add(dataPane);
         mainContainer.setPrefHeight((index + 1) * 400); // Adjust container height
     }
+    private AnchorPane createStyledDataPane(int ID) {
+        AnchorPane dataPane = new AnchorPane();
+        dataPane.setPrefSize(1093, 68); // Set pane size
+        dataPane.setStyle(
+                "-fx-background-color: #ffffff; " + // White background
+                        "-fx-border-top-color: #cccccc; " + // Border only on top
+                        "-fx-border-top-width: 5px; " + // Slightly thicker top border
+                        "-fx-background-radius: 10; " +
+                        "-fx-border-color: gray;"
 
+        );
 
+//        // Adding hover effect for dataPane
+//        dataPane.setOnMouseEntered(event -> dataPane.setStyle(
+//                "-fx-background-color: #f0f0f0; " + // Slightly darker background on hover
+//                        "-fx-border-top-color: #cccccc; " + // Border remains only on top
+//                        "-fx-border-top-width: 2px; " + // Same width border on hover
+//                        "-fx-border-radius: 10; " +
+//                        "-fx-background-radius: 10; " +
+//                        "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 8, 0, 4, 4);" // Stronger shadow effect on hover
+//        ));
+//        dataPane.setOnMouseExited(event -> dataPane.setStyle(
+//                "-fx-background-color: #ffffff; " + // White background after hover
+//                        "-fx-border-top-color: #cccccc; " + // Light border on top
+//                        "-fx-border-top-width: 2px; " + // Same border width as before
+//                        "-fx-border-radius: 10; " +
+//                        "-fx-background-radius: 10; " +
+//                        "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0, 2, 2);" // Default shadow effect
+//        ));
+
+        return dataPane;
+    }
+    private Label createStyledLabel(String text, double layoutX, double layoutY, double width) {
+        Label label = new Label(text);
+        label.setStyle(
+                "-fx-font-size: 14px; " +
+                        "-fx-font-family: Arial; " +
+                        "-fx-font-weight: bold; " +
+                        "-fx-text-fill: #333333; " + // Dark gray text
+                        "-fx-padding: 8px 16px; " + // Padding for a nice look
+                        "-fx-border-radius: 10px; " + // Rounded corners
+                        "-fx-background-radius: 10px; " + // Rounded corners
+                        "-fx-border-color: white; " + // Light border color
+                        "-fx-border-width: 1px; " + // Thin border
+                        "-fx-background-color: transparent;" // Transparent background for the label
+        );
+        label.setLayoutX(layoutX);
+        label.setLayoutY(layoutY);
+        label.setPrefWidth(width);
+        return label;
+    }
+    private void showAlert(String Title, String Header, String Message, Alert.AlertType alertType){
+        Alert alert = new Alert(alertType);
+        alert.setTitle(Title);
+        alert.setHeaderText(Header);
+        alert.setContentText(Message);
+        alert.showAndWait();
+    }
 
 
 
@@ -266,67 +319,11 @@ public class LibrarianMonitorBooks implements Initializable {
         });
         return button;
     }
-    private AnchorPane createStyledDataPane(int ID) {
-        AnchorPane dataPane = new AnchorPane();
-        dataPane.setPrefSize(1093, 68); // Set pane size
-        dataPane.setStyle(
-                "-fx-background-color: #ffffff; " + // White background
-                        "-fx-border-top-color: #cccccc; " + // Border only on top
-                        "-fx-border-top-width: 5px; " + // Slightly thicker top border
-                        "-fx-background-radius: 10; " +
-                        "-fx-border-color: gray;"
-
-        );
-
-//        // Adding hover effect for dataPane
-//        dataPane.setOnMouseEntered(event -> dataPane.setStyle(
-//                "-fx-background-color: #f0f0f0; " + // Slightly darker background on hover
-//                        "-fx-border-top-color: #cccccc; " + // Border remains only on top
-//                        "-fx-border-top-width: 2px; " + // Same width border on hover
-//                        "-fx-border-radius: 10; " +
-//                        "-fx-background-radius: 10; " +
-//                        "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 8, 0, 4, 4);" // Stronger shadow effect on hover
-//        ));
-//        dataPane.setOnMouseExited(event -> dataPane.setStyle(
-//                "-fx-background-color: #ffffff; " + // White background after hover
-//                        "-fx-border-top-color: #cccccc; " + // Light border on top
-//                        "-fx-border-top-width: 2px; " + // Same border width as before
-//                        "-fx-border-radius: 10; " +
-//                        "-fx-background-radius: 10; " +
-//                        "-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0, 2, 2);" // Default shadow effect
-//        ));
-
-        return dataPane;
-    }
-
-    private Label createStyledLabel(String text, double layoutX, double layoutY, double width) {
-        Label label = new Label(text);
-        label.setStyle(
-                "-fx-font-size: 14px; " +
-                        "-fx-font-family: Arial; " +
-                        "-fx-font-weight: bold; " +
-                        "-fx-text-fill: #333333; " + // Dark gray text
-                        "-fx-padding: 8px 16px; " + // Padding for a nice look
-                        "-fx-border-radius: 10px; " + // Rounded corners
-                        "-fx-background-radius: 10px; " + // Rounded corners
-                        "-fx-border-color: white; " + // Light border color
-                        "-fx-border-width: 1px; " + // Thin border
-                        "-fx-background-color: transparent;" // Transparent background for the label
-        );
-        label.setLayoutX(layoutX);
-        label.setLayoutY(layoutY);
-        label.setPrefWidth(width);
-        return label;
-    }
 
 
-    private void showAlert(String Title, String Header, String Message, Alert.AlertType alertType){
-        Alert alert = new Alert(alertType);
-        alert.setTitle(Title);
-        alert.setHeaderText(Header);
-        alert.setContentText(Message);
-        alert.showAndWait();
-    }
+
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
