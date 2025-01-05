@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="501.0" prefWidth="834.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.librarymanagement.BorrowingBook">
+<AnchorPane prefHeight="501.0" prefWidth="834.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.librarymanagement.BorrowingBook">
 
     <!-- Dialog Window for Borrowing Book -->
     <AnchorPane fx:id="borrowDialog" layoutX="36.0" layoutY="36.0" prefHeight="432.0" prefWidth="762.0" style="-fx-background-color: white; -fx-border-color: black;">
@@ -22,8 +20,8 @@
         <Button fx:id="closeDialogButton" layoutX="146.0" layoutY="380.0" onAction="#handleCloseDialog" text="Cancel" />
       <Label layoutX="14.0" layoutY="46.0" text="Book Title" />
       <Label layoutX="14.0" layoutY="97.0" text="Book Author" />
+      <DatePicker fx:id="duedate" layoutX="13.0" layoutY="230.0" />
       <Label layoutX="14.0" layoutY="149.0" text="Quantity" />
-      <TextField fx:id="dueDateTextField" layoutX="13.0" layoutY="227.0" prefWidth="200.0" promptText="Due Date" />
       <Label layoutX="13.0" layoutY="259.0" text="Note: If the book borrowed not return in time. You will be fine." textFill="RED">
          <font>
             <Font name="System Italic" size="12.0" />

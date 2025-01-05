@@ -2,33 +2,33 @@ package com.library.librarymanagement;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class BorrowingBook {
 
     @FXML
-    private TextField bookTitleField,dueDateTextField;
+    private TextField bookTitleField;
     @FXML
     private TextField bookAuthorField;
     @FXML
     private TextField quantityField;
-
+    @FXML
+    private DatePicker duedate;
     @FXML
     private void handleConfirmBorrow(ActionEvent event) {
 
         String bookTitle = bookTitleField.getText();
         String bookAuthor = bookAuthorField.getText();
         String quantity = quantityField.getText();
+        String dueDate = duedate.getValue().toString();
 
-        if (bookTitle.isEmpty() || bookAuthor.isEmpty() || quantity.isEmpty()) {
+        if (bookTitle.isEmpty() || bookAuthor.isEmpty() || quantity.isEmpty()||dueDate.isEmpty()) {
             showAlert("Error", null, "Please fill out all fields.", Alert.AlertType.ERROR);
             return;
         }
+        
 
 
     }

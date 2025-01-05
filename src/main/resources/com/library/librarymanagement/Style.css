@@ -210,6 +210,54 @@
     -fx-background-color: #4facfe; /* Highlight color for selected item */
     -fx-text-fill: white; /* White text on selected item */
 }
+.duedate {
+    -fx-background-color: #f8f9fa; /* Light gray */
+    -fx-border-color: #ced4da; /* Border color */
+    -fx-border-radius: 5px; /* Rounded corners */
+    -fx-background-radius: 5px; /* Match the rounded corners */
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #495057; /* Dark gray text */
+}
+
+/* Hover state for the DatePicker */
+.duedate:hover {
+    -fx-border-color: #80bdff; /* Light blue border on hover */
+    -fx-background-color: #e9ecef; /* Slightly lighter background */
+}
+
+/* Focus state for the DatePicker */
+.duedate:focused {
+    -fx-border-color: #007bff; /* Blue border when focused */
+    -fx-background-color: #ffffff; /* White background */
+}
+
+/* Calendar popup styling */
+.date-picker-popup {
+    -fx-background-color: #ffffff; /* White popup background */
+    -fx-border-color: #ced4da; /* Border around the popup */
+    -fx-border-radius: 5px; /* Rounded corners */
+    -fx-background-radius: 5px;
+    -fx-padding: 10px;
+}
+
+/* Buttons and navigation in the calendar */
+.button {
+    -fx-background-color: #007bff; /* Blue background for buttons */
+    -fx-text-fill: white; /* White text */
+    -fx-background-radius: 3px;
+    -fx-padding: 5px;
+}
+
+.button:hover {
+    -fx-background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Selected date styling */
+.date-cell:selected {
+    -fx-background-color: #007bff; /* Highlighted background for selected date */
+    -fx-text-fill: white; /* White text */
+}
 
 
 
