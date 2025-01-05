@@ -91,7 +91,7 @@ public class LogIn implements Initializable {
             showAlert("Error", null, "Something went wrong!", Alert.AlertType.ERROR);
         }
     }
-    private void openDashboard(String role) throws IOException {
+    private void openDashboard(String role) throws IOException, SQLException {
         Stage currentStage = (Stage) closeIcon.getScene().getWindow();
 
         if (role.equalsIgnoreCase("Super Admin") || role.equalsIgnoreCase("Admin")){
@@ -146,14 +146,16 @@ public class LogIn implements Initializable {
         }
         return code.toString();
     }
-    private void openNewStage(String fxml, String title) throws IOException {
+    private void openNewStage(String fxml, String title) throws IOException, SQLException {
         Stage currentStage = (Stage) closeIcon.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
         Parent root = fxmlLoader.load();
-
+        String id = database.getValue("SELECT id FROM users WHERE username = '" + emailField.getText() + "'");
+        String email = database.getValue("SELECT email FROM users WHERE id = " + id);
+        String password = database.getValue("SELECT password FROM users WHERE id = " + id);
         if (role.equalsIgnoreCase("Super Admin") || role.equalsIgnoreCase("Admin")){
             Admin admin = fxmlLoader.getController();
-            admin.setRoleAndUsername(role,emailField.getText());
+            admin.setRoleAndUsername(role,emailField.getText(), id,email,password);
         }
 
         Scene scene = new Scene(root);

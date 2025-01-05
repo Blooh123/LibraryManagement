@@ -1,6 +1,10 @@
 package com.library.librarymanagement;
 
 import com.library.librarymanagement.DB.Database;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,17 +33,20 @@ public class Admin implements Initializable {
     private BorderPane borderPane;
     private Map<String, Pane> loadedScenes = new HashMap<>();
     @FXML
-    private Label usernameLabel,roleLabel;
+    private Label usernameLabel,roleLabel,idLabel,emailLabel,passlabel;
 
 
     private String userRole;
     private String userName;
 
-    public void setRoleAndUsername(String role,String userName){
+    public void setRoleAndUsername(String role,String userName, String id, String email, String pass){
         this.userRole = role;
         this.userName= userName;
         usernameLabel.setText(userName);
         roleLabel.setText(role);
+        idLabel.setText(id);
+        emailLabel.setText(email);
+        passlabel.setText(pass);
 
     }
 
@@ -68,6 +76,10 @@ public class Admin implements Initializable {
         }
     }
     private void backToLogInPage() throws IOException {
+        // Stop the timeline before navigating
+        if (timeline != null) {
+            timeline.stop();  // Stop the timeline
+        }
         FXMLLoader loader = new FXMLLoader(getClass().getResource("LogIn.fxml"));
         Parent root = loader.load();
         Stage currentStage = (Stage) borderPane.getScene().getWindow();
@@ -131,13 +143,69 @@ public class Admin implements Initializable {
 
 
     }
+    private Timeline timeline;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        try {
-//            setCenteredPane("AdminUserManagement.fxml");
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        // Create a Timeline to check for changes every second
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            try {
+                checkForAdminChanges();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }));
+
+        timeline.setCycleCount(Timeline.INDEFINITE); // Run the check indefinitely
+        timeline.play(); // Start the timeline
     }
+    private void closeStage() {
+        // Stop the timeline before closing the stage
+        if (timeline != null) {
+            timeline.stop();  // Stop the timeline
+        }
+
+        Stage currentStage = (Stage) usernameLabel.getScene().getWindow();
+        currentStage.close();
+    }
+
+
+    /**
+     * Checks for changes in the admin details in the database.
+     */
+    private void checkForAdminChanges() throws SQLException {
+        String OriginalUsername = usernameLabel.getText();
+        String OriginalEmail = emailLabel.getText();
+        String OriginalPassword = passlabel.getText();
+        try {
+            // Fetch current admin details from the database
+            String currentUsername = database.getValue("SELECT username FROM users WHERE id = " + idLabel.getText());
+            String currentEmail = database.getValue("SELECT email FROM users WHERE id = "  +idLabel.getText());
+            String currentPassword = database.getValue("SELECT password FROM users WHERE id = "  +idLabel.getText());
+
+            // Compare fetched details with the original ones
+            if (!OriginalUsername.equals(currentUsername) || !OriginalEmail.equals(currentEmail) || !OriginalPassword.equals(currentPassword)) {
+                System.out.println("Admin details have changed!");
+
+                // Update local variables and reflect changes in the UI
+                OriginalUsername = currentUsername;
+                OriginalEmail = currentEmail;
+
+                Platform.runLater(() -> {
+                        usernameLabel.setText(currentUsername);
+                        closeStage();
+                        // After closing, navigate to the login page
+                        try {
+                            backToLogInPage();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

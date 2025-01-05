@@ -50,6 +50,13 @@
                   <Image url="@../../../Icons/EditIcon2.png" />
                </image>
             </ImageView>
+            <Label fx:id="idLabel" layoutX="371.0" layoutY="57.0" opacity="0.0" text="Label" />
+            <Label fx:id="emailLabel" layoutX="358.0" layoutY="91.0" opacity="0.0" text="Label" />
+            <Label fx:id="passlabel" layoutX="33.0" layoutY="26.0" opacity="0.0" text="Label">
+               <font>
+                  <Font size="1.0" />
+               </font>
+            </Label>
          </children>
       </AnchorPane>
    </left>
