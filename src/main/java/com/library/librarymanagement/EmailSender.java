@@ -2,9 +2,11 @@ package com.library.librarymanagement;
 
 import com.library.librarymanagement.DB.Database;
 import jakarta.mail.*;
+import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,6 +25,46 @@ public class    EmailSender {
     static String USER = "root";
     static String PASS = "";
 
+    private String recipientEmail;
+
+    public void sentWelcomeMessage(String email, EmailCallback callback) {
+        // Configure email properties for sending via SMTP
+        Properties properties = configureSMTPProperties();
+
+        // Initialize email session with authentication
+        Session session = Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(senderEmail, appPassword);
+            }
+        });
+
+        // Send email in a background thread to avoid blocking the UI
+        new Thread(() -> {
+            try {
+                MimeMessage message = createEmailMessage(session, email);
+                Transport.send(message);
+                System.out.println("Welcome Email sent to " + email);
+
+                // Notify the success callback
+                if (callback != null) {
+                    callback.onSuccess();
+                }
+            } catch (MessagingException e) {
+                //e.printStackTrace();
+
+                // Notify the failure callback
+                if (callback != null) {
+                    callback.onFailure(e);
+                }
+            }
+        }).start();
+    }
+
+
+    public EmailSender(){
+
+    }
     public EmailSender(String recipientEmail) {
         sendOTP(recipientEmail);
     }
@@ -135,6 +177,30 @@ public class    EmailSender {
                 + "<hr style=\"border: none; border-top: 1px solid #ddd; margin: 20px 0;\">"
                 + "<p style=\"font-size: 14px; color: #888; text-align: center;\">&copy; 2025 SecureLibrarySystem. All rights reserved.</p>"
                 + "</div>";
+
+        message.setContent(emailBody, "text/html");
+        return message;
+    }
+    private MimeMessage createEmailMessage(Session session, String recipientEmail) throws MessagingException {
+        MimeMessage message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(senderEmail));
+        message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipientEmail));
+        message.setSubject("Welcome to Secure Library System");
+
+        // HTML body of the email
+        String emailBody = "<div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;\">"
+                + "<h2 style=\"text-align: center; color: #3871c1; margin-bottom: 20px;\">Welcome to Secure Library System</h2>"
+                + "<p style=\"font-size: 16px; color: #444;\">Dear [Admin/User],</p>"
+                + "<p style=\"font-size: 16px; color: #444;\">We are thrilled to have you as part of the <strong>Secure Library System</strong> community! Our goal is to make managing and accessing library resources as seamless and secure as possible.</p>"
+                + "<p style=\"font-size: 16px; color: #444;\">Here are a few things you can do with our system:</p>"
+                + "<ul style=\"font-size: 16px; color: #444;\">"
+                + "<li>Borrow and manage books with ease</li>"
+                + "<li>Track your borrowing history</li>"
+                + "<li>Stay updated with library notifications</li>"
+                + "</ul>"
+                + "<p style=\"font-size: 14px; color: #888; text-align: center;\">&copy; 2025 SecureLibrarySystem. All rights reserved.</p>"
+                + "</div>";
+
 
         message.setContent(emailBody, "text/html");
         return message;
