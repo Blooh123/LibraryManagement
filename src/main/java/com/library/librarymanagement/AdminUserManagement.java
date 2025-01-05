@@ -246,7 +246,7 @@ public class AdminUserManagement implements Initializable {
                     return;
                 }
                 database.updateUser(ID,username,password,role,email);
-                database.addToActivityLog(usernameLabel.getText(),roleLabel.getText(),"Update a user: " + OriginalUsername + " New details has been change! (Username,Password,Role, Email)");
+                database.addToActivityLog(usernameLabel.getText(),roleLabel.getText(),usernameLabel.getText()  +" Updated a user: " + OriginalUsername);
                 showAlert("Success",null, "Saved successfully!", Alert.AlertType.INFORMATION);
                 usernameFIeld1.clear();
                 passwordFieldAdd1.clear();
@@ -427,8 +427,6 @@ public class AdminUserManagement implements Initializable {
         mainContainer.getChildren().add(dataPane);
         mainContainer.setPrefHeight((index + 1) * 90);
     }
-
-
     private Button createButton(int ID, String IconPath) {
         Button button = new Button();
         button.setStyle(
@@ -472,7 +470,6 @@ public class AdminUserManagement implements Initializable {
         });
         return button;
     }
-
     private void deleteAction(int id) throws SQLException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation to Delete");
@@ -508,8 +505,6 @@ public class AdminUserManagement implements Initializable {
         rolesCombo1.setValue(Role);
         emailField1.setText(email);
     }
-
-
     private AnchorPane createStyledDataPane(int ID) {
         AnchorPane dataPane = new AnchorPane();
         dataPane.setPrefSize(1093, 68);
@@ -519,7 +514,6 @@ public class AdminUserManagement implements Initializable {
         //dataPane.setOnMousePressed(event -> handleEditButtonAction(airportCode));
         return dataPane;
     }
-
     private Label createStyledLabel(String text, double x, double y, double width) {
         Label label = new Label(text);
         label.setLayoutX(x);

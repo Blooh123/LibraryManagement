@@ -29,12 +29,12 @@
             <Font name="System Bold" size="37.0" />
          </font>
       </Label>
-      <Label layoutX="565.0" layoutY="127.0" text="Admin recent Activities" textFill="#2b5876">
+      <Label layoutX="565.0" layoutY="127.0" text="Recent Activities" textFill="#2b5876">
          <font>
             <Font name="System Bold" size="37.0" />
          </font>
       </Label>
-      <ScrollPane fx:id="scrollPane1" hbarPolicy="NEVER" layoutX="550.0" layoutY="190.0" prefHeight="370.0" prefWidth="892.0" style="-fx-background: white; -fx-background-color: white;" vbarPolicy="NEVER">
+      <ScrollPane fx:id="scrollPane1" hbarPolicy="NEVER" layoutX="550.0" layoutY="190.0" prefHeight="870.0" prefWidth="892.0" style="-fx-background: white; -fx-background-color: white;" vbarPolicy="NEVER">
          <content>
             <AnchorPane fx:id="mainContainer1" minHeight="0.0" minWidth="0.0" prefHeight="209.0" prefWidth="894.0" style="-fx-background-color: white;" />
          </content>

@@ -309,7 +309,6 @@ public class AdminBookInventory implements Initializable {
         }
     }
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setButtonIcon(searchBtn, "/Icons/SearchIcon.png", 35, 35);

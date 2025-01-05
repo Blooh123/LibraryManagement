@@ -1,15 +1,14 @@
 package com.library.librarymanagement;
 
 import com.library.librarymanagement.DB.Database;
+import com.library.librarymanagement.Enity.ActivityLog;
 import com.library.librarymanagement.Enity.BorrowRecord;
+import com.library.librarymanagement.Enity.UserData;
 import com.library.librarymanagement.SecurityUtils.SecurityUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -22,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AdminReports implements Initializable {
@@ -272,8 +272,201 @@ public class AdminReports implements Initializable {
         alert.showAndWait();
     }
 
+
+
+
+
+    private void loadAllRecords1(String query) {
+        clearDataPane1();
+        new Thread(() -> {
+            //String query = "SELECT * FROM users";
+            boolean check = false;
+            List<ActivityLog> activityLogs = new ArrayList<>();
+
+            try (Connection connection = DriverManager.getConnection(DB_URL, USER, PASS);
+                 PreparedStatement preparedStatement = connection.prepareStatement(query);
+                 ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("id");
+                    String user = resultSet.getString("user");
+                    String role = resultSet.getString("role");
+                    String activity  = resultSet.getString("activity");
+                    activityLogs.add(new ActivityLog(id,user,role,activity));
+
+                    check = true;
+
+                }
+            } catch (SQLException e) {
+                Platform.runLater(() -> showAlert("Error", null, "Something went wrong while loading data", Alert.AlertType.ERROR));
+                return;
+            }
+
+            boolean finalCheck = check;
+
+            Platform.runLater(() -> {
+                clearDataPane(); // Clear previous data
+                if (!finalCheck) {
+                    Label noDataLabel = createStyledLabel("No Data to show", 500, 100, 200);
+                    noDataLabel.setOpacity(0.50);
+                    mainContainer1.getChildren().add(noDataLabel);
+                } else {
+                    // Create panes for each record
+                    for (ActivityLog activityLog : activityLogs) {
+                       createDataPane(activityLog.getId(),activityLog.getUser(),activityLog.getRole(),activityLog.getActivity());
+                    }
+                }
+            });
+        }).start();
+    }
+
+    private void clearDataPane1() {
+        mainContainer1.getChildren().clear();
+        mainContainer1.setPrefHeight(0); // Reset height
+    }
+
+    private void createDataPane(int id, String userName, String role, String activity) {
+        AnchorPane dataPane = createStyledDataPane1(id);
+        Label ID = createStyledLabel1(String.valueOf(id), 15, 23, 291);
+        Label UserName = createStyledLabel1(userName, 97, 23, 291);
+        Label Role = createStyledLabel1(role, 250, 23, 291);
+        Label activityL = createStyledLabel1(activity,400,23,400);
+
+        Button editButton = createButton(id, "/Icons/EditIcon.png");
+        editButton.setLayoutX(950);
+        editButton.setLayoutY(15);
+        Button deleteButton = createButton(id, "/Icons/DeleteIcon.png");
+        deleteButton.setLayoutY(15);
+        deleteButton.setLayoutX(1000);
+
+        deleteButton.setOnAction(event -> {
+            try {
+                deleteAction(id);
+            } catch (SQLException e) {
+                showAlert("Error", null ,"Something went wrong!", Alert.AlertType.ERROR);
+            }
+        });
+
+        editButton.setOnAction(event -> {
+            try {
+                editAction(id);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
+        dataPane.setOnMousePressed(event -> {
+            // Uncomment and implement any click handling logic for the row
+            // handleEditButtonAction(id, userName, role);
+        });
+        dataPane.getChildren().addAll(ID, UserName, Role,activityL);
+        int index = mainContainer1.getChildren().size();
+        dataPane.setLayoutY(index * 90);
+        mainContainer1.getChildren().add(dataPane);
+        mainContainer1.setPrefHeight((index + 1) * 90);
+    }
+    private Button createButton(int ID, String IconPath) {
+        Button button = new Button();
+        button.setStyle(
+                "-fx-background-color: transparent; " +
+                        "-fx-text-fill: #6a89cc; " +
+                        "-fx-background-radius: 8; " +
+                        "-fx-padding: 5 10; " +
+                        "-fx-cursor: hand;"
+        );
+
+        // Load the icon image
+        ImageView iconView = new ImageView();
+        try {
+            Image iconImage = new Image(getClass().getResourceAsStream(IconPath)); // Ensure IconPath is a valid path or URL
+            iconView.setImage(iconImage);
+            iconView.setFitWidth(30); // Set desired width
+            iconView.setFitHeight(30); // Set desired height
+            iconView.setPreserveRatio(true);
+        } catch (Exception e) {
+            System.out.println("Error loading icon image: " + e.getMessage());
+        }
+
+        // Add the icon to the button
+        button.setGraphic(iconView);
+
+        // Add scaling effect when pressed
+        button.setOnMousePressed(event -> {
+            button.setScaleX(0.9); // Slightly reduce button size
+            button.setScaleY(0.9);
+        });
+
+        button.setOnMouseReleased(event -> {
+            button.setScaleX(1.0); // Reset to original size
+            button.setScaleY(1.0);
+        });
+
+        // Add button action (replace with your actual logic)
+        button.setOnAction(event -> {
+            // Your action here
+            System.out.println("Button clicked with ID: " + ID);
+        });
+        return button;
+    }
+    private void deleteAction(int id) throws SQLException {
+//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+//        alert.setTitle("Confirmation to Delete");
+//        alert.setContentText("Are you sure you want to delete?");
+//        Optional<ButtonType> result = alert.showAndWait();
+//
+//        if (result.isPresent() && result.get() == ButtonType.OK) {
+//            database.deleteUser(id);
+//            loadAllRecords(loadRecordsQuery);
+//            showAlert("Success",null,"Delete successfully!", Alert.AlertType.INFORMATION);
+//        }
+    }
+    private void editAction(int id) throws SQLException {
+//        animatePane(editUserPane,0,900,200);
+//        // Fetch data from the database
+//        String userName = database.getValue("SELECT username FROM users WHERE id = " + id).trim();
+//        String Role = database.getValue("SELECT role FROM users WHERE id = " + id).trim();
+//        ID = id;
+//        String email = database.getValue("SELECT email FROM users WHERE id = " + id).trim();
+//        String role = roleLabel.getText();
+//
+//        OriginalUsername = userName;
+//        OriginalEmail = email;
+//
+//        if (role.equalsIgnoreCase("Admin")){
+//            rolesCombo1.getItems().setAll("Librarian", "Student");
+//        }else {
+//            rolesCombo1.getItems().setAll("Admin", "Librarian", "Student");
+//        }
+//
+//
+//        usernameFIeld1.setText(userName);
+//        rolesCombo1.setValue(Role);
+//        emailField1.setText(email);
+    }
+    private AnchorPane createStyledDataPane1(int ID) {
+        AnchorPane dataPane = new AnchorPane();
+        dataPane.setPrefSize(700, 68);
+        dataPane.setStyle("-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0, 2, 2);");
+        dataPane.setOnMouseEntered(event -> dataPane.setStyle("-fx-background-color: #f0f0f0; -fx-border-radius: 10; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 8, 0, 4, 4);"));
+        dataPane.setOnMouseExited(event -> dataPane.setStyle("-fx-background-color: #ffffff; -fx-border-color: #cccccc; -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 6, 0, 2, 2);"));
+        //dataPane.setOnMousePressed(event -> handleEditButtonAction(airportCode));
+        return dataPane;
+    }
+    private Label createStyledLabel1(String text, double x, double y, double width) {
+        Label label = new Label(text);
+        label.setLayoutX(x);
+        label.setLayoutY(y);
+        label.setPrefWidth(width);
+        label.setStyle("-fx-font-size: 16px; -fx-font-family: 'Arial'; -fx-text-fill: #333333;");
+        return label;
+    }
+
+
+
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         loadAllRecords(query);
+        loadAllRecords1("SELECT * FROM activity_logs");
     }
 }

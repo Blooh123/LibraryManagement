@@ -134,6 +134,7 @@ public class EditAdminDetails implements Initializable {
             }
 
             database.updateAdmin(ID, username, password, email);
+            database.addToActivityLog(username,"Admin",OriginalEmail  +" edited its details");
             closeStage();
 
         } catch (SQLException e) {
