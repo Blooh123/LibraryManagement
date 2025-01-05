@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
- <AnchorPane prefHeight="661.0" prefWidth="1094.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.librarymanagement.BorrowingBook">
+
+<AnchorPane prefHeight="661.0" prefWidth="1094.0" stylesheets="@Style.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.library.librarymanagement.ReturnBooks">
 
 <!-- Dialog Window for Borrowing Book -->
 <AnchorPane fx:id="borrowDialog" layoutX="36.0" layoutY="36.0" prefHeight="586.0" prefWidth="1021.0" style="-fx-background-color: white; -fx-border-color: black;">
-    <TextField fx:id="bookTitleField" editable="false" focusTraversable="false" layoutX="45.0" layoutY="166.0" prefHeight="38.0" prefWidth="236.0" promptText="Book Title" />
-    <TextField fx:id="usernamefield" editable="false" focusTraversable="false" layoutX="45.0" layoutY="92.0" prefHeight="38.0" prefWidth="236.0" promptText="Student Username" />
+    <TextField fx:id="bookTitleField" focusTraversable="false" layoutX="45.0" layoutY="174.0" prefHeight="38.0" prefWidth="236.0" promptText="Book Title" />
+    <TextField fx:id="usernamefield" focusTraversable="false" layoutX="45.0" layoutY="93.0" prefHeight="38.0" prefWidth="236.0" promptText="Student Username" />
     <TextField fx:id="quantityField" focusTraversable="false" layoutX="45.0" layoutY="276.0" prefHeight="38.0" prefWidth="236.0" promptText="Enter Quantity" />
 
     <!-- Button to confirm borrowing -->
-    <Button fx:id="confirmReceived" layoutX="50.0" layoutY="502.0" onAction="#handleConfirmBorrow" prefHeight="40.0" prefWidth="103.0" text="Confirm Returned" />
+    <Button fx:id="confirmReceived" disable="true" layoutX="33.0" layoutY="502.0" onAction="#handleConfirmReturned" prefHeight="40.0" prefWidth="120.0" text="Confirm Returned" />
 
     <!-- Button to close the dialog -->
     <Button fx:id="closeDialogButton" layoutX="178.0" layoutY="502.0" onAction="#handleCloseDialog" prefHeight="40.0" prefWidth="103.0" text="Cancel" />
-    <Label layoutX="46.0" layoutY="147.0" text="Book Title" />
+    <Label layoutX="46.0" layoutY="155.0" text="Book Title" />
     <Label layoutX="46.0" layoutY="72.0" text="Student Username" />
 
     <Label layoutX="46.0" layoutY="257.0" text="Quantity" />
@@ -37,7 +37,7 @@
         </image>
     </ImageView>
     <Label fx:id="userId" layoutX="326.0" layoutY="29.0" opacity="0.0" text="Label" />
+      <TextField fx:id="fineFIeld" editable="false" focusTraversable="false" layoutX="45.0" layoutY="347.0" prefHeight="38.0" prefWidth="236.0" promptText="Fine" />
+      <Button fx:id="proceed" layoutX="36.0" layoutY="418.0" onAction="#proceed" prefHeight="40.0" prefWidth="120.0" text="Proceed" />
 </AnchorPane>
 </AnchorPane>
-
-

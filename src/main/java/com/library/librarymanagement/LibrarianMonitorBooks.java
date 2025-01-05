@@ -6,7 +6,10 @@ import com.library.librarymanagement.SecurityUtils.SecurityUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,8 +18,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import javax.crypto.SecretKey;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -219,9 +225,21 @@ public class LibrarianMonitorBooks implements Initializable {
         mainContainer.setPrefHeight((index + 1) * 400); // Adjust container height
     }
 
-    @FXML private void recievedBook(ActionEvent event) {
+    @FXML private void recievedBook(ActionEvent event) throws IOException {
+        Stage currentStage = (Stage) recieveBorrowedBooksBtn.getScene().getWindow();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ReturnBooks.fxml"));
+        Parent root = loader.load();
 
-        System.out.println("Recieved Book");
+        Scene scene = new Scene(root);
+        Stage newStage = new Stage();
+        newStage.setScene(scene);
+        newStage.setResizable(false);
+        newStage.getIcons().add(new Image(getClass().getResourceAsStream("/Images/LibraryManagement.png")));
+        newStage.initOwner(currentStage);
+        newStage.initModality(Modality.WINDOW_MODAL);
+        newStage.setTitle("Secure Library");
+
+        newStage.show();
     }
 
 
@@ -332,7 +350,7 @@ public class LibrarianMonitorBooks implements Initializable {
 
 
 
-    private Button createButton(int ID, String IconPath) {
+    private Button createButton1(int ID, String IconPath) {
         Button button = new Button();
         button.setStyle(
                 "-fx-background-color: transparent; " +
